@@ -10,7 +10,7 @@ import 'rc-slider/assets/index.css';
 import '../styles/MultiLayerSelector.css';
 
 const MultiLayerSelector: React.FC = () => {
-  const { activeLayers, toggleLayer, setLayerOpacity, activateBloomPreset } = useAppStore();
+  const { activeLayers, toggleLayer, setLayerOpacity, activateBloomPreset, bloomModeActive } = useAppStore();
   const indicators = getIndicatorsList();
   
   const isLayerActive = (layerId: string) => {
@@ -40,8 +40,16 @@ const MultiLayerSelector: React.FC = () => {
     <div className="control-section multi-layer-selector">
       <div className="section-header">
         <label className="control-label">Capas Activas</label>
-        <button onClick={handleBloomPreset} className="bloom-preset-button" title="Activa capas optimizadas para detección de floración">
-          🌸 Modo Floración
+        <button
+          onClick={handleBloomPreset}
+          className="bloom-preset-button"
+          title={
+            bloomModeActive
+              ? 'Desactiva el modo floración y restaura las capas previas'
+              : 'Activa capas optimizadas para detección de floración'
+          }
+        >
+          {bloomModeActive ? '❌ Desactivar Modo Floración' : '🌸 Activar Modo Floración'}
         </button>
       </div>
       

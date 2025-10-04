@@ -26,6 +26,14 @@ export interface AppStore {
   loading: boolean;
   error: string | null;
   dateInterval: number; // Intervalo de días entre fechas (1-30)
+  // Estado de modo floración
+  bloomModeActive: boolean;
+  savedStateBeforeBloom: {
+    indicator: string;
+    activeLayers: LayerConfig[];
+    date: string;
+    availableDates: string[];
+  } | null;
   
   // Acciones
   setIndicator: (indicator: string) => void;
@@ -63,6 +71,8 @@ export const useAppStore = create<AppStore>((set, get) => {
     loading: false,
     error: null,
     dateInterval: 1, // Intervalo por defecto de 1 día
+  bloomModeActive: false,
+  savedStateBeforeBloom: null,
     
     // Acciones
     setIndicator: (indicator: string) => {
@@ -287,7 +297,47 @@ export const useAppStore = create<AppStore>((set, get) => {
     },
     
     activateBloomPreset: () => {
-      // Preset de detección de floración
+      // Toggle del modo floración: si está activo, restaurar; si no, activar preset
+      const { bloomModeActive, savedStateBeforeBloom } = get();
+
+      if (bloomModeActive) {
+        // Desactivar: restaurar estado anterior si existe
+        if (savedStateBeforeBloom) {
+          set({
+            indicator: savedStateBeforeBloom.indicator,
+            activeLayers: savedStateBeforeBloom.activeLayers,
+            availableDates: savedStateBeforeBloom.availableDates,
+            date: savedStateBeforeBloom.date,
+            bloomModeActive: false,
+            savedStateBeforeBloom: null,
+            loading: true,
+          });
+
+          updateURL({
+            indicator: savedStateBeforeBloom.indicator,
+            date: savedStateBeforeBloom.date,
+            lat: get().mapCenter[0],
+            lng: get().mapCenter[1],
+            zoom: get().mapZoom,
+            opacity: get().opacity,
+          });
+
+          setTimeout(() => set({ loading: false }), 500);
+        } else {
+          // Si no hay snapshot, simplemente marcar como inactivo
+          set({ bloomModeActive: false });
+        }
+        return;
+      }
+
+      // Activar: guardar snapshot y configurar preset de detección de floración
+      const snapshot = {
+        indicator: get().indicator,
+        activeLayers: get().activeLayers,
+        date: get().date,
+        availableDates: get().availableDates,
+      };
+
       const presetIndicator = 'NDVI';
 
       // Generar fechas disponibles para NDVI
@@ -315,6 +365,8 @@ export const useAppStore = create<AppStore>((set, get) => {
         indicator: presetIndicator, // Mantener para compatibilidad
         availableDates,
         date: newDate,
+        bloomModeActive: true,
+        savedStateBeforeBloom: snapshot,
         loading: true,
       });
 
