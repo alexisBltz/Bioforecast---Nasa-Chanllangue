@@ -8,7 +8,33 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.legends-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legend-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.legend-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
+}
+
+.legend-item-title {
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-main);
 }
 
@@ -20,6 +46,7 @@
   color: var(--accent);
   padding: 4px 8px;
   transition: transform 0.2s;
+  flex-shrink: 0;
 }
 
 .legend-toggle:hover {

@@ -8,11 +8,15 @@ import { getIndicatorsList } from '../services/gibsConfig';
 import '../styles/IndicatorSelector.css';
 
 const IndicatorSelector: React.FC = () => {
-  const { indicator, setIndicator } = useAppStore();
+  const { indicator, setIndicator, activateBloomPreset } = useAppStore();
   const indicators = getIndicatorsList();
   
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setIndicator(e.target.value);
+  };
+  
+  const handleBloomPreset = () => {
+    activateBloomPreset();
   };
   
   return (
@@ -32,6 +36,14 @@ const IndicatorSelector: React.FC = () => {
           </option>
         ))}
       </select>
+      
+      <button 
+        className="bloom-preset-btn"
+        onClick={handleBloomPreset}
+        title="Activa capas recomendadas para monitoreo de floración (NDVI + EVI + LST)"
+      >
+        🌸 Activar Modo Floración
+      </button>
     </div>
   );
 };

@@ -27,6 +27,33 @@
   opacity: 0.6;
 }
 
+.bloom-preset-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.bloom-preset-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+}
+
+.bloom-preset-btn:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 420px) {
   .control-select {
     padding: 8px 10px;
@@ -34,5 +61,9 @@
   }
   .control-select + .control-select {
     margin-top: 8px;
+  }
+  .bloom-preset-btn {
+    font-size: 13px;
+    padding: 9px 14px;
   }
 }

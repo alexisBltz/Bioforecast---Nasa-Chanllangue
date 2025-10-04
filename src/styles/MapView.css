@@ -52,6 +52,25 @@
   color: var(--text-secondary);
 }
 
+.popup-analyze-btn {
+  width: 100%;
+  padding: 8px 12px;
+  margin: 12px 0 8px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.popup-analyze-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
 .popup-content small {
   display: block;
   margin-top: 8px;

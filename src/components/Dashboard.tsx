@@ -3,6 +3,8 @@
  * Panel derecho con controles de la aplicación
  */
 import React from 'react';
+import MultiLayerSelector from './MultiLayerSelector';
+import { useAppStore } from '../store/appStore';
 import IndicatorSelector from './IndicatorSelector';
 import DateControls from './DateControls';
 import OpacityControl from './OpacityControl';
@@ -12,25 +14,25 @@ import ActionButtons from './ActionButtons';
 import '../styles/Dashboard.css';
 
 const Dashboard: React.FC = () => {
+  const activeLayers = useAppStore((state) => state.activeLayers);
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-           <h1 className="dashboard-title"><span className="logo-bio">Bio</span><span className="logo-forecast">Forecast</span></h1>
+        <h1 className="dashboard-title"><span className="logo-bio">Bio</span><span className="logo-forecast">Forecast</span></h1>
         <p className="subtitle">Visualizador de Fenología Satelital</p>
         <div className="badge-visual">
           <span>📊 Visualización — no valores numéricos</span>
         </div>
       </div>
-      
       <div className="dashboard-content">
         <IndicatorSelector />
+        {activeLayers.length > 1 && <MultiLayerSelector />}
         <DateControls />
         <OpacityControl />
         <LegendPanel />
         <MetadataCard />
         <ActionButtons />
       </div>
-      
       <div className="dashboard-footer">
         <p className="attribution">
           <small>
