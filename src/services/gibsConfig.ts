@@ -58,7 +58,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
     id: 'THERMAL_ANOMALIES',
     friendlyName: 'Thermal Anomalies (VIIRS/NOAA20)',
     gibsLayerName: 'VIIRS_NOAA20_Thermal_Anomalies_375m_All',
-    serviceType: 'WMTS',
+    serviceType: 'WMS',
     timeResolution: 'daily',
     legendURL: `${GIBS_BASE_URLS.LEGENDS}/VIIRS_NOAA20_Thermal_Anomalies_375m_H.png`,
     preferredCRS: 'EPSG:3857',
@@ -72,7 +72,9 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
     id: 'CROPLANDS',
     friendlyName: 'Croplands (Global)',
     gibsLayerName: 'Agricultural_Lands_Croplands_2000',
-    serviceType: 'WMTS',
+    // Este layer no acepta el TileMatrixSet por defecto en la plantilla WMTS usada.
+    // Usamos WMS como fallback estable para evitar errores de TILEMATRIXSET.
+    serviceType: 'WMS',
     timeResolution: 'static',
     legendURL: `${GIBS_BASE_URLS.LEGENDS}/Agricultural_Lands_Croplands_2000_H.png`,
     preferredCRS: 'EPSG:3857',
@@ -103,9 +105,8 @@ export const getWMTSTileURL = (
   x: number,
   y: number
 ): string => {
-  const dateStr = date.replace(/-/g, '');
+  const dateStr = date; // No quitar los guiones
   const tileMatrixSet = 'GoogleMapsCompatible_Level9';
-  
   return `${GIBS_BASE_URLS.WMTS_EPSG3857}/${indicator.gibsLayerName}/default/${dateStr}/${tileMatrixSet}/${z}/${y}/${x}.png`;
 };
 

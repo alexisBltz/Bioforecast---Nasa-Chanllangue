@@ -53,21 +53,28 @@ export const useAppStore = create<AppStore>((set, get) => {
     setIndicator: (indicator: string) => {
       const indicatorData = INDICATORS[indicator];
       if (!indicatorData) return;
-      
-      set({ indicator, loading: true, error: null });
-      
+
+      let availableDates: string[] = [];
+      if (indicatorData.timeResolution === 'static') {
+        availableDates = [indicatorData.startDate || '2000-01-01'];
+      } else {
+        const days = indicatorData.timeResolution === '8-day' ? 90 : 365;
+        availableDates = generateRecentDates(days);
+      }
+
+      const newDate = availableDates[0];
+
+      set({ indicator, availableDates, date: newDate, loading: true, error: null });
+
       // Actualizar URL
       updateURL({
         indicator,
-        date: get().date,
+        date: newDate,
         lat: get().mapCenter[0],
         lng: get().mapCenter[1],
         zoom: get().mapZoom,
         opacity: get().opacity,
       });
-      
-      // Generar fechas disponibles según el indicador
-      get().generateAvailableDates();
     },
     
     setDate: (date: string) => {

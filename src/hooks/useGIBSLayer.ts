@@ -45,12 +45,11 @@ export const useGIBSLayer = (
         opacity,
       });
     } else if (indicator.serviceType === 'WMTS') {
-      // Configuración para WMTS como TileLayer
-      const dateStr = date.replace(/-/g, '');
-      const tileUrl = `${GIBS_BASE_URLS.WMTS_EPSG3857}/${indicator.gibsLayerName}/default/${dateStr}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png`;
-      
+      const dateStr = date; // mantener guiones: YYYY-MM-DD
+      const tileUrlTemplate = `${GIBS_BASE_URLS.WMTS_EPSG3857}/${indicator.gibsLayerName}/default/${dateStr}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png`;
+
       setLayerConfig({
-        url: tileUrl,
+        url: tileUrlTemplate,
         attribution,
         opacity,
       });
