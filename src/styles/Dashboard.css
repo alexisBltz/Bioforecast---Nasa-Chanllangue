@@ -8,7 +8,7 @@
 }
 
 .dashboard-header {
-  padding: 18px 16px;
+  padding: 4px 16px;
   color: var(--text-main);
   border-bottom: 1px solid var(--sep);
 }
@@ -16,7 +16,6 @@
 .dashboard-header .dashboard-title {
   font-size: 28px;
   font-weight: 700;
-  margin-bottom: 8px;
 }
 
 .logo-bio {
@@ -37,7 +36,6 @@
 .badge-visual {
   display: inline-block;
   background: rgba(255,255,255,0.02);
-  padding: 6px 12px;
   border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
