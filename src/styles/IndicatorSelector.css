@@ -26,4 +26,7 @@
     padding: 8px 10px;
     font-size: 13px;
   }
+  .control-select + .control-select {
+    margin-top: 8px;
+  }
 }
