@@ -40,13 +40,16 @@ export const generateDateRange = (
 };
 
 /**
- * Genera un rango de fechas para los últimos N días
+ * Genera un rango de fechas para los últimos N días con intervalo personalizado
+ * @param days - Número de días hacia atrás desde hoy
+ * @param interval - Intervalo de días entre cada fecha (por defecto 1)
  */
-export const generateRecentDates = (days: number = 30): string[] => {
+export const generateRecentDates = (days: number = 30, interval: number = 1): string[] => {
   const dates: string[] = [];
   const today = new Date();
+  const validInterval = Math.max(1, Math.min(30, interval)); // Validar intervalo entre 1 y 30
   
-  for (let i = days - 1; i >= 0; i--) {
+  for (let i = days - 1; i >= 0; i -= validInterval) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
     dates.push(formatDate(date));
