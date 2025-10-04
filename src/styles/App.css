@@ -6,12 +6,14 @@
 }
 
 body {
+  /* Palette variables are defined in :root below */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  /* Allow vertical scrolling on small devices so the dashboard isn't cut off */
+  overflow: auto;
 }
 
 .app {
@@ -20,45 +22,212 @@ body {
   overflow: hidden;
 }
 
+:root {
+  --panel-bg: #1A1F2E; /* sidebar background */
+  --map-bg: #0D1117; /* map background */
+  --text-main: #FFFFFF; /* primary text on dark backgrounds */
+  --text-secondary: #8B92A8; /* secondary text */
+  --accent: #10B981; /* green accent */
+  --data-value: var(--accent); /* highlighted data values */
+  --input-bg: #2D3748; /* controls background */
+  --input-border: #3E4758; /* control border */
+  --hover: #3A4556; /* hover/border */
+  --sep: #2A3142; /* separators */
+}
 .app-layout {
   display: flex;
   width: 100%;
   height: 100%;
+  /* show dashboard on the left by reversing DOM visually */
+  flex-direction: row-reverse;
+  min-height: 0;
 }
 
 .map-section {
   flex: 1;
   height: 100%;
   position: relative;
+  min-height: 0; /* important for flex children so nested scroll works */
+  background: var(--map-bg); /* map area background */
+  color: var(--text-main);
 }
 
 .dashboard-section {
   width: 400px;
   height: 100%;
   overflow-y: auto;
-  background: #ffffff;
-  border-left: 2px solid #e0e0e0;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  background: var(--panel-bg);
+  border-right: 2px solid var(--sep);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  min-width: 0;
+  color: var(--text-main);
+}
+
+
+/* When dashboard is hidden, let the map occupy full available space */
+.app-layout.dashboard-hidden {
+  display: flex;
+}
+.app-layout.dashboard-hidden .map-section {
+  width: 100%;
+  height: 100%;
+}
+.app-layout.dashboard-hidden .dashboard-section {
+  display: none;
+}
+
+/* Hamburger toggle styles */
+.hamburger-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2000;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  backdrop-filter: blur(4px);
+}
+.hamburger-icon {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-main);
+}
+
+.hamburger-icon svg,
+.overlay-close svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+}
+
+/* If the page gets a light background (e.g., exported screenshot), ensure icons remain visible */
+.hamburger-toggle.light, .overlay-close.light {
+  background: rgba(0,0,0,0.06);
+}
+/* Make icon accents easy to reuse for inline SVGs or icon fonts */
+.icon-accent {
+  color: var(--accent) !important;
+  fill: currentColor;
+  stroke: currentColor;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6), 0 0 6px rgba(255,255,255,0.06);
+}
+
+@media (max-width: 1024px) {
+  .hamburger-toggle {
+    right: 8px;
+    top: 8px;
+  }
+}
+
+/* On larger screens hide the hamburger (desktop uses persistent dashboard) */
+@media (min-width: 1025px) {
+  .hamburger-toggle {
+    display: none;
+  }
+}
+
+/* Backdrop that covers the map when overlay is open */
+.overlay-backdrop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2400;
+}
+
+/* Close button inside overlay (top-right) */
+.overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2600;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--accent);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* Make hamburger and close icons use accent and stand out on both light/dark backgrounds */
+.hamburger-toggle, .overlay-close {
+  backdrop-filter: blur(6px);
+}
+.hamburger-toggle .hamburger-icon {
+  color: var(--accent);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6), 0 0 6px rgba(255,255,255,0.06);
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
   .app-layout {
     flex-direction: column;
+    height: 100vh;
   }
-  
+
+  /* Give the map a reasonable portion of the viewport but allow it to shrink */
   .map-section {
-    height: 60%;
+    height: 50vh;
+    min-height: 260px;
   }
-  
+
+  /* Dashboard stacks under the map and becomes scrollable; allow content to expand vertically */
   .dashboard-section {
     width: 100%;
-    height: 40%;
+    height: auto;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
+
+  /* By default on tablet/phone we keep dashboard accessible below the map but not overlaying it.
+     When overlay is requested (.overlay-open) we show it as a fixed overlay that covers the map. */
+  .app-layout.overlay-open .dashboard-section {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    z-index: 2500;
+    background: var(--panel-bg);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    overflow: auto;
+    transform: translateY(0);
+  }
+
+  /* When overlay is not active, hide dashboard visually to maximize map space (optional) */
+  .app-layout:not(.overlay-open) .dashboard-section {
+    display: none;
+  }
+
+  /* allow nested flex children to scroll */
+  .dashboard-section {
+    width: 400px;
   }
 }
 
 @media (max-width: 768px) {
+  .map-section {
+    height: 40vh;
+    min-height: 220px;
+  }
+
   .dashboard-section {
     width: 100%;
+    max-height: calc(100vh - 160px);
+  }
+
+  /* Reduce dashboard padding for very small devices */
+  .dashboard-section .dashboard-content {
+    padding: 12px;
   }
 }
