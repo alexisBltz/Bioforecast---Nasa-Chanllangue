@@ -21,37 +21,52 @@ const DateControls: React.FC = () => {
     setIsPlaying,
     playSpeed,
     indicator,
+    loading,
   } = useAppStore();
   
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const indicatorData = getIndicatorById(indicator);
   
-  // Play/Pause animation
+  // Play/Pause animation - espera a que la capa se cargue completamente
   useEffect(() => {
     if (isPlaying) {
-      const currentIndex = availableDates.indexOf(date);
-      
-      intervalRef.current = setInterval(() => {
+      const playNextFrame = () => {
+        const currentIndex = availableDates.indexOf(date);
         const nextIndex = (currentIndex + 1) % availableDates.length;
+        
         if (nextIndex === 0) {
+          // Llegó al final, detener reproducción
           setIsPlaying(false);
-        } else {
-          setDate(availableDates[nextIndex]);
+          return;
         }
-      }, playSpeed);
+        
+        // Solo cambiar a la siguiente fecha si no está cargando
+        if (!loading) {
+          setDate(availableDates[nextIndex]);
+          // Programar el siguiente frame con el intervalo normal
+          intervalRef.current = setTimeout(playNextFrame, playSpeed);
+        } else {
+          // Si está cargando, esperar un poco más y verificar nuevamente
+          // Timeout máximo de 5 segundos para evitar quedarse atascado
+          intervalRef.current = setTimeout(playNextFrame, Math.min(500, playSpeed));
+        }
+      };
+      
+      // Iniciar la reproducción
+      intervalRef.current = setTimeout(playNextFrame, playSpeed);
     } else {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        clearTimeout(intervalRef.current);
         intervalRef.current = null;
       }
     }
     
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        clearTimeout(intervalRef.current);
       }
     };
-  }, [isPlaying, date, availableDates, playSpeed, setDate, setIsPlaying]);
+  }, [isPlaying, date, availableDates, playSpeed, setDate, setIsPlaying, loading]);
   
   const handleDatePickerChange = (selectedDate: Date | null) => {
     if (selectedDate) {
@@ -106,11 +121,13 @@ const DateControls: React.FC = () => {
               onClick={togglePlay}
               className="play-button"
               title={isPlaying ? 'Pausar animación' : 'Reproducir animación'}
+              disabled={isPlaying && loading}
             >
-              {isPlaying ? '⏸️ Pausar' : '▶️ Reproducir'}
+              {isPlaying ? (loading ? '⏳ Cargando...' : '⏸️ Pausar') : '▶️ Reproducir'}
             </button>
             <span className="date-counter">
               {currentIndex + 1} / {availableDates.length}
+              {isPlaying && loading && ' (cargando...)'}
             </span>
           </div>
         </>
