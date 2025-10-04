@@ -1,6 +1,6 @@
 /* DateControls Styles */
 .date-picker-wrapper {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .date-picker-input {
@@ -13,7 +13,6 @@
   color: #2c3e50;
   transition: all 0.2s;
 }
-
 .date-picker-input:hover {
   border-color: #667eea;
 }
@@ -51,12 +50,14 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .play-button {
-  flex: 1;
-  padding: 10px 16px;
-  font-size: 14px;
+  flex: 1 1 auto;
+  padding: 8px 12px;
+  font-size: 13px;
   font-weight: 500;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -64,7 +65,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
-  margin-right: 12px;
+
 }
 
 .play-button:hover {
@@ -80,7 +81,17 @@
   font-size: 13px;
   color: #6b7280;
   font-weight: 500;
-  white-space: nowrap;
+  
+}
+
+@media (max-width: 420px) {
+  .play-button {
+    width: 100%;
+  }
+  .date-counter {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* rc-slider overrides */
