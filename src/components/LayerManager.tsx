@@ -26,7 +26,7 @@ const LayerManager: React.FC<LayerManagerProps> = ({ onMapClick }) => {
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
     
     return () => clearTimeout(timer);
   }, [indicator, date, setLoading]);
