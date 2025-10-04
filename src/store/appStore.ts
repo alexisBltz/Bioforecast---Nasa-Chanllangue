@@ -4,7 +4,7 @@
 import { create } from 'zustand';
 import { getInitialState, updateURL } from '../utils/urlState';
 import { INDICATORS } from '../services/gibsConfig';
-import { generateRecentDates } from '../utils/dateUtils';
+import { generateRecentDates, formatDate } from '../utils/dateUtils';
 
 export interface AppStore {
   // Estado
@@ -18,6 +18,7 @@ export interface AppStore {
   playSpeed: number;
   loading: boolean;
   error: string | null;
+  dateInterval: number; // Intervalo de días entre fechas (1-30)
   
   // Acciones
   setIndicator: (indicator: string) => void;
@@ -28,6 +29,8 @@ export interface AppStore {
   setPlaySpeed: (speed: number) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setDateInterval: (interval: number) => void;
+  goToToday: () => void;
   initializeFromURL: () => void;
   resetView: () => void;
   generateAvailableDates: () => void;
@@ -48,6 +51,7 @@ export const useAppStore = create<AppStore>((set, get) => {
     playSpeed: 1000, // ms entre frames
     loading: false,
     error: null,
+    dateInterval: 1, // Intervalo por defecto de 1 día
     
     // Acciones
     setIndicator: (indicator: string) => {
@@ -132,6 +136,68 @@ export const useAppStore = create<AppStore>((set, get) => {
       set({ error });
     },
     
+    setDateInterval: (interval: number) => {
+      // Validar que el intervalo esté entre 1 y 30
+      const validInterval = Math.max(1, Math.min(30, interval));
+      const indicatorData = INDICATORS[get().indicator];
+      
+      // Generar nuevas fechas disponibles con el nuevo intervalo
+      let availableDates: string[] = [];
+      if (indicatorData?.timeResolution === 'static') {
+        availableDates = [indicatorData.startDate || '2000-01-01'];
+      } else {
+        const days = indicatorData?.timeResolution === '8-day' ? 90 : 365;
+        availableDates = generateRecentDates(days, validInterval);
+      }
+      
+      // Mantener la fecha actual o la más cercana
+      const currentDate = get().date;
+      const closestDate = availableDates.reduce((closest, date) => {
+        const currentDiff = Math.abs(new Date(date).getTime() - new Date(currentDate).getTime());
+        const closestDiff = Math.abs(new Date(closest).getTime() - new Date(currentDate).getTime());
+        return currentDiff < closestDiff ? date : closest;
+      }, availableDates[0]);
+      
+      set({ 
+        dateInterval: validInterval, 
+        availableDates,
+        date: closestDate,
+        loading: true 
+      });
+      
+      updateURL({
+        indicator: get().indicator,
+        date: closestDate,
+        lat: get().mapCenter[0],
+        lng: get().mapCenter[1],
+        zoom: get().mapZoom,
+        opacity: get().opacity,
+      });
+    },
+    
+    goToToday: () => {
+      const today = formatDate(new Date());
+      const availableDates = get().availableDates;
+      
+      // Encontrar la fecha más cercana a hoy
+      const closestDate = availableDates.reduce((closest, date) => {
+        const currentDiff = Math.abs(new Date(date).getTime() - new Date(today).getTime());
+        const closestDiff = Math.abs(new Date(closest).getTime() - new Date(today).getTime());
+        return currentDiff < closestDiff ? date : closest;
+      }, availableDates[availableDates.length - 1] || today);
+      
+      set({ date: closestDate, loading: true });
+      
+      updateURL({
+        indicator: get().indicator,
+        date: closestDate,
+        lat: get().mapCenter[0],
+        lng: get().mapCenter[1],
+        zoom: get().mapZoom,
+        opacity: get().opacity,
+      });
+    },
+    
     initializeFromURL: () => {
       const state = getInitialState();
       set({
@@ -163,9 +229,10 @@ export const useAppStore = create<AppStore>((set, get) => {
     
     generateAvailableDates: () => {
       const indicatorData = INDICATORS[get().indicator];
+      const interval = get().dateInterval;
       
       if (!indicatorData) {
-        set({ availableDates: generateRecentDates(365) });
+        set({ availableDates: generateRecentDates(365, interval) });
         return;
       }
       
@@ -175,9 +242,9 @@ export const useAppStore = create<AppStore>((set, get) => {
         return;
       }
       
-      // Para otros indicadores, generar fechas recientes
+      // Para otros indicadores, generar fechas recientes con el intervalo actual
       const days = indicatorData.timeResolution === '8-day' ? 90 : 365;
-      set({ availableDates: generateRecentDates(days) });
+      set({ availableDates: generateRecentDates(days, interval) });
     },
   };
 });
