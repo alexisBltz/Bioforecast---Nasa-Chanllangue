@@ -1,0 +1,128 @@
+/* BloomAnalysis Styles */
+.bloom-analysis-panel {
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  z-index: 1000;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  max-width: 280px;
+  min-width: 250px;
+}
+
+.analysis-header h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 0 0 12px 0;
+}
+
+.analysis-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.analysis-spinner {
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.analysis-loading p {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.analysis-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.likelihood-badge {
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.likelihood-badge strong {
+  font-size: 16px;
+  display: block;
+  margin-top: 4px;
+}
+
+.analysis-note {
+  margin-top: 12px;
+  padding: 10px;
+  background: #eff6ff;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+}
+
+.analysis-note small {
+  font-size: 11px;
+  color: #1e40af;
+  line-height: 1.4;
+}
+
+/* Leaflet Draw overrides */
+.leaflet-draw-toolbar a {
+  background-color: white !important;
+  border: 2px solid #667eea !important;
+}
+
+.leaflet-draw-toolbar a:hover {
+  background-color: #667eea !important;
+}
+
+.leaflet-draw-actions a {
+  background-color: white !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bloom-analysis-panel {
+    right: 50%;
+    transform: translateX(50%);
+    max-width: calc(100% - 40px);
+  }
+}

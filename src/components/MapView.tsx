@@ -2,12 +2,13 @@
  * MapView Component
  * Componente principal del mapa usando react-leaflet
  */
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { MapContainer, TileLayer, Popup, useMapEvents } from 'react-leaflet';
 import { Map as LeafletMap } from 'leaflet';
 import type { LeafletMouseEvent } from 'leaflet';
 import { useAppStore } from '../store/appStore';
 import LayerManager from './LayerManager';
+import TimeSeriesModal from './TimeSeriesModal';
 import 'leaflet/dist/leaflet.css';
 import '../styles/MapView.css';
 
@@ -16,14 +17,18 @@ interface PopupContentProps {
   lng: number;
   indicator: string;
   date: string;
+  onAnalyzeClick: () => void;
 }
 
-const PopupContent: React.FC<PopupContentProps> = ({ lat, lng, indicator, date }) => (
+const PopupContent: React.FC<PopupContentProps> = ({ lat, lng, indicator, date, onAnalyzeClick }) => (
   <div className="popup-content">
     <h3>Información del punto</h3>
     <p><strong>Coordenadas:</strong> {lat.toFixed(4)}, {lng.toFixed(4)}</p>
     <p><strong>Indicador:</strong> {indicator}</p>
     <p><strong>Fecha:</strong> {date}</p>
+    <button className="popup-analyze-btn" onClick={onAnalyzeClick}>
+      📈 Ver Serie Temporal
+    </button>
     <small>Visualización — no valores numéricos</small>
   </div>
 );
@@ -46,8 +51,10 @@ const MapEventHandler: React.FC = () => {
 const MapView: React.FC = () => {
   const mapRef = useRef<LeafletMap | null>(null);
   const { mapCenter, mapZoom, indicator, date } = useAppStore();
-  const [popupInfo, setPopupInfo] = React.useState<PopupContentProps | null>(null);
-  const [popupPosition, setPopupPosition] = React.useState<[number, number] | null>(null);
+  const [popupInfo, setPopupInfo] = useState<{ lat: number; lng: number; indicator: string; date: string } | null>(null);
+  const [popupPosition, setPopupPosition] = useState<[number, number] | null>(null);
+  const [showTimeSeries, setShowTimeSeries] = useState(false);
+  const [timeSeriesCoords, setTimeSeriesCoords] = useState<{ lat: number; lon: number } | null>(null);
   
   const handleMapClick = (e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
@@ -58,6 +65,14 @@ const MapView: React.FC = () => {
       indicator,
       date,
     });
+  };
+  
+  const handleAnalyzeClick = () => {
+    if (popupInfo) {
+      setTimeSeriesCoords({ lat: popupInfo.lat, lon: popupInfo.lng });
+      setShowTimeSeries(true);
+      setPopupPosition(null); // Cerrar el popup
+    }
   };
   
   return (
@@ -87,10 +102,19 @@ const MapView: React.FC = () => {
           <Popup position={popupPosition} eventHandlers={{
             remove: () => setPopupPosition(null)
           }}>
-            <PopupContent {...popupInfo} />
+            <PopupContent {...popupInfo} onAnalyzeClick={handleAnalyzeClick} />
           </Popup>
         )}
       </MapContainer>
+      
+      {/* Time Series Modal */}
+      {showTimeSeries && timeSeriesCoords && (
+        <TimeSeriesModal
+          lat={timeSeriesCoords.lat}
+          lon={timeSeriesCoords.lon}
+          onClose={() => setShowTimeSeries(false)}
+        />
+      )}
     </div>
   );
 };
