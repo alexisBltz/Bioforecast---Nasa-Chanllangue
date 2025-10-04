@@ -29,7 +29,9 @@ function App() {
             aria-label={overlayOpen ? 'Cerrar panel' : 'Abrir panel'}
             onClick={() => setOverlayOpen((v) => !v)}
           >
-            <span className="hamburger-icon">☰</span>
+            <svg className="hamburger-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            </svg>
           </button>
         </div>
         {/* Backdrop shown only when overlayOpen */}
@@ -39,7 +41,9 @@ function App() {
           {/* Close button visible in overlay mode */}
           {overlayOpen && (
             <button className="overlay-close" aria-label="Cerrar panel" onClick={() => setOverlayOpen(false)}>
-              ✕
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+              </svg>
             </button>
           )}
           <Dashboard />

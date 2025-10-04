@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>BioForecast</h1>
+           <h1 className="dashboard-title"><span className="logo-bio">Bio</span><span className="logo-forecast">Forecast</span></h1>
         <p className="subtitle">Visualizador de Fenología Satelital</p>
         <div className="badge-visual">
           <span>📊 Visualización — no valores numéricos</span>

@@ -3,22 +3,28 @@
   width: 100%;
   padding: 10px 12px;
   font-size: 14px;
-  border: 2px solid #e0e0e0;
+  border: 1px solid var(--input-border);
   border-radius: 6px;
-  background: white;
-  color: #2c3e50;
+  background: var(--input-bg);
+  color: var(--text-main);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .control-select:hover {
-  border-color: #667eea;
+  border-color: var(--hover); /* hover */
 }
 
 .control-select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 6px rgba(16,185,129,0.06);
+}
+
+.control-select:disabled {
+  background: rgba(255,255,255,0.02);
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 @media (max-width: 420px) {
