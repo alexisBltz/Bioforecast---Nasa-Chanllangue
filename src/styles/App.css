@@ -1,0 +1,64 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.map-section {
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.dashboard-section {
+  width: 400px;
+  height: 100%;
+  overflow-y: auto;
+  background: #ffffff;
+  border-left: 2px solid #e0e0e0;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  
+  .map-section {
+    height: 60%;
+  }
+  
+  .dashboard-section {
+    width: 100%;
+    height: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-section {
+    width: 100%;
+  }
+}
