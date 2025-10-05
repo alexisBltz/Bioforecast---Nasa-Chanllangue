@@ -3,7 +3,6 @@
  */
 import { useEffect, useState } from 'react';
 import { getIndicatorById, getWMSParams, GIBS_BASE_URLS } from '../services/gibsConfig';
-import { generateRecentDates } from '../utils/dateUtils';
 import { useAppStore } from '../store/appStore';
 
 export interface GIBSLayerConfig {
@@ -20,6 +19,35 @@ export interface GIBSLayerConfig {
   usedDate?: string;
   outOfRange?: boolean;
 }
+
+/**
+ * Ajusta la fecha según la resolución temporal de la capa
+ */
+const adjustDateForLayer = (date: string, timeResolution: string): string => {
+  // Para capas anuales, usar el último año conocido (2023)
+  if (timeResolution === 'annual') {
+    const currentYear = new Date().getFullYear();
+    const lastAvailableYear = currentYear - 2; // Datos anuales tienen 2 años de retraso
+    return `${lastAvailableYear}-01-01`;
+  }
+
+  // Para capas de 8 días, alinear a inicio de periodo
+  if (timeResolution === '8-day') {
+    const targetDate = new Date(date);
+    const startOfYear = new Date(targetDate.getFullYear(), 0, 1);
+    const dayOfYear = Math.floor((targetDate.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+    
+    // MODIS usa periodos de 8 días empezando en día 1 del año
+    const periodNumber = Math.floor(dayOfYear / 8);
+    const alignedDay = periodNumber * 8 + 1;
+    
+    const alignedDate = new Date(targetDate.getFullYear(), 0, alignedDay);
+    return alignedDate.toISOString().split('T')[0];
+  }
+
+  // Para capas diarias, usar la fecha tal cual
+  return date;
+};
 
 export const useGIBSLayer = (
   indicatorId: string,
@@ -39,55 +67,18 @@ export const useGIBSLayer = (
 
     const attribution = '© NASA GIBS / EOSDIS';
 
-    // Determinar la fecha válida según la resolución temporal del indicador
-    let usedDate = date;
+    // Ajustar fecha según resolución temporal
+    let usedDate = adjustDateForLayer(date, indicator.timeResolution);
     let outOfRange = false;
 
-    if (indicator.timeResolution === 'static') {
-      usedDate = indicator.startDate || date;
-      if (date !== usedDate) outOfRange = true;
-    } else if (indicator.timeResolution === '8-day') {
-      // Generar rango de fechas 8-day y escoger la más cercana
-      const candidates = generateRecentDates(90); // últimos ~90 entradas de 8-day (ajustado en store)
-      // Buscar coincidencia exacta
-      if (candidates.includes(date)) {
-        usedDate = date;
-      } else {
-        // Buscar la fecha más cercana en días
-        const target = new Date(date);
-        let best = candidates[0];
-        let bestDiff = Math.abs(new Date(best).getTime() - target.getTime());
-        for (const c of candidates) {
-          const diff = Math.abs(new Date(c).getTime() - target.getTime());
-          if (diff < bestDiff) {
-            best = c;
-            bestDiff = diff;
-          }
-        }
-        usedDate = best;
-        outOfRange = true;
+    // Notificar si la fecha fue ajustada
+    if (usedDate !== date) {
+      outOfRange = true;
+      if (indicator.timeResolution === 'annual') {
+        setError(`Mostrando datos del último año disponible (${usedDate}) para ${indicator.friendlyName}`);
+      } else if (indicator.timeResolution === '8-day') {
+        setError(`Fecha ajustada al periodo de 8 días más cercano (${usedDate}) para ${indicator.friendlyName}`);
       }
-    } else {
-      // daily or others: intentar usar la fecha, pero validar contra start/end si existen
-      if (indicator.startDate) {
-        const start = new Date(indicator.startDate).getTime();
-        const target = new Date(date).getTime();
-        if (indicator.endDate) {
-          const end = new Date(indicator.endDate).getTime();
-          if (target < start || target > end) {
-            // capear al rango
-            outOfRange = true;
-            usedDate = indicator.startDate;
-          }
-        } else if (target < start) {
-          outOfRange = true;
-          usedDate = indicator.startDate;
-        }
-      }
-    }
-
-    if (outOfRange) {
-      setError(`La fecha ${date} no está disponible para ${indicatorId}. Usando ${usedDate}.`);
     } else {
       setError(null);
     }
