@@ -12,13 +12,15 @@ import { getIndicatorById } from '../services/gibsConfig';
 
 interface LayerManagerProps {
   onMapClick: (e: LeafletMouseEvent) => void;
+  onMapRightClick: () => void;
 }
 
-const LayerManager: React.FC<LayerManagerProps> = ({ onMapClick }) => {
+const LayerManager: React.FC<LayerManagerProps> = ({ onMapClick, onMapRightClick }) => {
   const { indicator, date, setLoading, activeLayers } = useAppStore();
 
   useMapEvents({
     click: onMapClick,
+    contextmenu: () => onMapRightClick(), // Manejar clic derecho por separado
   });
 
   useEffect(() => {

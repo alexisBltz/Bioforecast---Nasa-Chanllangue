@@ -124,6 +124,13 @@ const MapView: React.FC = () => {
   }, [mapCenter, mapZoom]);
   
   const handleMapClick = (e: LeafletMouseEvent) => {
+    // Si ya hay un modal abierto, cerrarlo en lugar de abrir uno nuevo
+    if (showPointData || showSuitability) {
+      closeAllModals();
+      return;
+    }
+
+    // Si no hay modal abierto, proceder normalmente
     const { lat, lng } = e.latlng;
     setPopupPosition([lat, lng]);
     setClickedCoords([lat, lng]); // Guardar coordenadas clickeadas en el store
@@ -135,6 +142,13 @@ const MapView: React.FC = () => {
     });
   };
   
+  const handleMapRightClick = () => {
+    // Clic derecho siempre cierra los modales
+    if (showPointData || showSuitability || popupPosition) {
+      closeAllModals();
+    }
+  };
+  
   const handleShowDataClick = () => {
     setShowPointData(true);
     setPopupPosition(null); // Cerrar el popup
@@ -144,6 +158,27 @@ const MapView: React.FC = () => {
     setShowSuitability(true);
     setPopupPosition(null); // Cerrar el popup
   };
+
+  // Función para cerrar todos los modales
+  const closeAllModals = () => {
+    setShowPointData(false);
+    setShowSuitability(false);
+    setPopupPosition(null);
+  };
+
+  // Efecto para manejar la tecla Escape para cerrar modales
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && (showPointData || showSuitability)) {
+        closeAllModals();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showPointData, showSuitability]);
   
   return (
     <div className="map-container">
@@ -177,7 +212,7 @@ const MapView: React.FC = () => {
         />
         
         {/* GIBS Overlay Layer */}
-        <LayerManager onMapClick={handleMapClick} />
+        <LayerManager onMapClick={handleMapClick} onMapRightClick={handleMapRightClick} />
         
         {/* Map Events Handler */}
         <MapEventHandler />
