@@ -5,6 +5,13 @@ import { create } from 'zustand';
 import { getInitialState, updateURL } from '../utils/urlState';
 import { INDICATORS } from '../services/gibsConfig';
 import { generateRecentDates, formatDate } from '../utils/dateUtils';
+import { 
+  DEFAULT_LATITUDE, 
+  DEFAULT_LONGITUDE, 
+  DEFAULT_ZOOM, 
+  DEFAULT_OPACITY,
+  APP_CONFIG 
+} from '../config/constants';
 
 export interface LayerConfig {
   id: string;
@@ -69,10 +76,10 @@ export const useAppStore = create<AppStore>((set, get) => {
     mapZoom: initialState.zoom,
     opacity: initialState.opacity,
     isPlaying: false,
-    playSpeed: 1000, // ms entre frames
+    playSpeed: APP_CONFIG.DEFAULT_PLAY_SPEED, // ms entre frames
     loading: false,
     error: null,
-    dateInterval: 1, // Intervalo por defecto de 1 día
+    dateInterval: APP_CONFIG.DEFAULT_DATE_INTERVAL, // Intervalo por defecto de 1 día
     clickedCoords: null, // NUEVO: Inicialmente null
     bloomModeActive: false,
     savedStateBeforeBloom: null,
@@ -248,18 +255,18 @@ export const useAppStore = create<AppStore>((set, get) => {
     
     resetView: () => {
       set({
-        mapCenter: [0, 0],
-        mapZoom: 3,
-        opacity: 0.8,
+        mapCenter: [DEFAULT_LATITUDE, DEFAULT_LONGITUDE],
+        mapZoom: DEFAULT_ZOOM,
+        opacity: DEFAULT_OPACITY,
       });
       
       updateURL({
         indicator: get().indicator,
         date: get().date,
-        lat: 0,
-        lng: 0,
-        zoom: 3,
-        opacity: 0.8,
+        lat: DEFAULT_LATITUDE,
+        lng: DEFAULT_LONGITUDE,
+        zoom: DEFAULT_ZOOM,
+        opacity: DEFAULT_OPACITY,
       });
     },
     

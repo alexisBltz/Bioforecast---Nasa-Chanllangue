@@ -2,6 +2,13 @@
  * URL State Management
  * Serializa y deserializa el estado de la aplicación en query params
  */
+import { 
+  DEFAULT_LATITUDE, 
+  DEFAULT_LONGITUDE, 
+  DEFAULT_ZOOM, 
+  DEFAULT_OPACITY,
+  APP_CONFIG 
+} from '../config/constants';
 
 export interface AppState {
   indicator: string;
@@ -13,12 +20,12 @@ export interface AppState {
 }
 
 const DEFAULT_STATE: AppState = {
-  indicator: 'NDVI',
+  indicator: APP_CONFIG.DEFAULT_INDICATOR,
   date: new Date().toISOString().split('T')[0],
-  lat: 0,
-  lng: 0,
-  zoom: 3,
-  opacity: 0.8,
+  lat: DEFAULT_LATITUDE,
+  lng: DEFAULT_LONGITUDE,
+  zoom: DEFAULT_ZOOM,
+  opacity: DEFAULT_OPACITY,
 };
 
 /**

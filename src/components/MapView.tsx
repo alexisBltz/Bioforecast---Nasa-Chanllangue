@@ -2,7 +2,7 @@
  * MapView Component
  * Componente principal del mapa usando react-leaflet
  */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Popup, useMapEvents } from 'react-leaflet';
 import { Map as LeafletMap } from 'leaflet';
 import type { LeafletMouseEvent } from 'leaflet';
@@ -80,6 +80,24 @@ const MapView: React.FC = () => {
   const [popupPosition, setPopupPosition] = useState<[number, number] | null>(null);
   const [showPointData, setShowPointData] = useState(false);
   const [showSuitability, setShowSuitability] = useState(false);
+
+  // Efecto para actualizar el mapa cuando cambien las coordenadas o zoom del store
+  useEffect(() => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const currentCenter = map.getCenter();
+      const currentZoom = map.getZoom();
+      
+      // Solo actualizar si hay una diferencia significativa para evitar loops infinitos
+      const latDiff = Math.abs(currentCenter.lat - mapCenter[0]);
+      const lngDiff = Math.abs(currentCenter.lng - mapCenter[1]);
+      const zoomDiff = Math.abs(currentZoom - mapZoom);
+      
+      if (latDiff > 0.001 || lngDiff > 0.001 || zoomDiff > 0.1) {
+        map.setView(mapCenter, mapZoom, { animate: true, duration: 0.5 });
+      }
+    }
+  }, [mapCenter, mapZoom]);
   
   const handleMapClick = (e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
