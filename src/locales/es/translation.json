@@ -1,0 +1,139 @@
+{
+  "open_panel": "Abrir panel",
+  "close_panel": "Cerrar panel",
+  "go_to_most_recent": "Ir a la fecha más reciente",
+  "close": "Cerrar"
+  ,
+  "date_controls": {
+    "title": "Control de Fechas",
+    "range_label": "Rango disponible:",
+    "dates": "fechas",
+    "interval_label": "Intervalo",
+    "days": "día",
+    "select_step": "Selecciona el salto entre fechas:",
+    "step_title": "Salto de {{count}} día",
+    "interval_help": "Mayor intervalo = menos fechas, carga más rápida",
+    "select_date": "Selecciona una fecha",
+    "pause_animation": "Pausar animación",
+    "play_animation": "Reproducir animación",
+    "pause": "Pausar",
+    "play": "Reproducir"
+  },
+  "loading": "cargando...",
+  "timeseries": {
+    "title": "Serie Temporal",
+    "yaxis_index": "Índice",
+    "yaxis_temperature": "Temperatura (°C)",
+    "yaxis_precipitation": "Precipitación (mm)",
+    "yaxis_snow": "Cobertura (%)",
+    "yaxis_value": "Valor",
+    "stats_title": "Estadísticas (Últimos 12 meses)",
+    "avg": "Promedio",
+    "min": "Mínimo",
+    "max": "Máximo"
+  }
+  ,
+  "indicator": {
+    "label": "Indicador"
+  },
+  "bloom": {
+    "activate": "Activar Modo Floración",
+    "deactivate": "Desactivar Modo Floración",
+    "activate_title": "Activa capas recomendadas para monitoreo de floración (NDVI + LST + Precipitación + Cultivos)",
+    "deactivate_title": "Desactiva el modo floración y vuelve a tu configuración anterior"
+  },
+  "multilayer": {
+    "title": "Capas Activas"
+  },
+  "opacity": {
+    "label": "Opacidad"
+  },
+  "dashboard": {
+    "subtitle": "Visualizador de Fenología Satelital"
+  }
+  ,
+  "crop": {
+    "modal_title": "Análisis de Aptitud para Quinua",
+    "loading": "Analizando condiciones agroclimáticas...",
+    "retry": "Reintentar",
+    "location": "Ubicación",
+    "climate_title": "Clima",
+    "soil_title": "Suelo",
+    "terrain_title": "Terreno",
+    "climate_data": "Datos Climáticos",
+    "avg_temp": "Temperatura Media",
+    "min_temp": "Temp. Mínima",
+    "max_temp": "Temp. Máxima",
+    "annual_precip": "Precipitación Anual",
+    "solar_radiation": "Radiación Solar",
+    "aridity_index": "Índice de Aridez",
+    "soil_data": "Datos de Suelo",
+    "texture": "Textura",
+    "organic_matter": "Materia Orgánica",
+    "terrain_data": "Datos de Terreno",
+    "strengths": "Fortalezas",
+    "limitations": "Limitaciones",
+    "recommendation": "Recomendación"
+    ,
+    "error_generic": "Error al analizar aptitud del cultivo",
+    "error_422": "Error 422: Las coordenadas pueden estar fuera del rango válido o en el océano. Intenta con coordenadas terrestres.",
+    "error_nasa_power": "Error de datos climáticos",
+    "panel_title": "Análisis de Aptitud para Quinua",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "analyzing": "Analizando...",
+    "analyze_location": "Analizar Ubicación",
+    "collecting_data": "Recopilando datos de múltiples fuentes...",
+    "suitability": "aptitud",
+    "elevation": "Elevación",
+    "slope": "Pendiente",
+    "aspect": "Orientación"
+  }
+  ,
+  "indicators": {
+    "SURFACE_REFLECTANCE": {
+      "friendlyName": "Reflectancia superficial (MODIS — bandas 1,4,3)",
+      "description": "Reflectancia superficial multi-banda (Bands 1-4-3) útil para análisis de vegetación"
+    },
+    "THERMAL_ANOMALIES": {
+      "friendlyName": "Anomalías térmicas y detección de fuegos (VIIRS NOAA20)",
+      "description": "Anomalías térmicas y detección de fuegos activos"
+    },
+    "CROPLANDS": {
+      "friendlyName": "Tierras agrícolas (mapa global, año 2000)",
+      "description": "Mapa global de tierras agrícolas y cultivos (año 2000)"
+    },
+    "NDVI": {
+      "friendlyName": "NDVI — Índice de vegetación",
+      "description": "Índice de Vegetación de Diferencia Normalizada — mide la salud y densidad de la vegetación"
+    },
+    "EVI": {
+      "friendlyName": "EVI — Índice de vegetación mejorado",
+      "description": "Índice de Vegetación Mejorado — optimizado para áreas de alta biomasa"
+    },
+    "LST_DAY": {
+      "friendlyName": "Temperatura de superficie — Día",
+      "description": "Temperatura de la superficie terrestre durante el día"
+    },
+    "PRECIPITATION": {
+      "friendlyName": "Precipitación — Tasa",
+      "description": "Tasa de precipitación - GPM IMERG"
+    },
+    "SNOW_COVER": {
+      "friendlyName": "Cobertura de nieve (mapa cada 8 días)",
+      "description": "Cobertura de nieve y hielo (visible solo en regiones con nieve, datos cada 8 días)"
+    },
+    "LST_NIGHT": {
+      "friendlyName": "Temperatura de superficie — Noche",
+      "description": "Temperatura de la superficie terrestre durante la noche"
+    },
+    "SOIL_MOISTURE": {
+      "friendlyName": "Humedad del suelo superficial (SMAP)",
+      "description": "Humedad del suelo superficial - SMAP"
+    },
+    "AEROSOL_OPTICAL_DEPTH": {
+      "friendlyName": "Profundidad óptica de aerosoles",
+      "description": "Profundidad óptica de aerosoles — indicador de calidad del aire"
+    }
+  }
+}

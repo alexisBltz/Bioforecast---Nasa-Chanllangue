@@ -1,0 +1,139 @@
+{
+  "open_panel": "Open panel",
+  "close_panel": "Close panel",
+  "go_to_most_recent": "Go to most recent date",
+  "close": "Close"
+  ,
+  "date_controls": {
+    "title": "Date Controls",
+    "range_label": "Available range:",
+    "dates": "dates",
+    "interval_label": "Interval",
+    "days": "day",
+    "select_step": "Select the step between dates:",
+    "step_title": "Step of {{count}} day",
+    "interval_help": "Bigger interval = fewer dates, faster loading",
+    "select_date": "Select a date",
+    "pause_animation": "Pause animation",
+    "play_animation": "Play animation",
+    "pause": "Pause",
+    "play": "Play"
+  },
+  "loading": "loading...",
+  "timeseries": {
+    "title": "Time Series",
+    "yaxis_index": "Index",
+    "yaxis_temperature": "Temperature (°C)",
+    "yaxis_precipitation": "Precipitation (mm)",
+    "yaxis_snow": "Cover (%)",
+    "yaxis_value": "Value",
+    "stats_title": "Statistics (Last 12 months)",
+    "avg": "Average",
+    "min": "Minimum",
+    "max": "Maximum"
+  }
+  ,
+  "indicator": {
+    "label": "Indicator"
+  },
+  "bloom": {
+    "activate": "Enable Bloom Mode",
+    "deactivate": "Disable Bloom Mode",
+    "activate_title": "Activate recommended layers for bloom monitoring (NDVI + LST + Precipitation + Crops)",
+    "deactivate_title": "Disable bloom mode and restore previous configuration"
+  },
+  "multilayer": {
+    "title": "Active Layers"
+  },
+  "opacity": {
+    "label": "Opacity"
+  },
+  "dashboard": {
+    "subtitle": "Satellite Phenology Viewer"
+  }
+  ,
+  "crop": {
+    "modal_title": "Crop Suitability Analysis for Quinoa",
+    "loading": "Analyzing agroclimatic conditions...",
+    "retry": "Retry",
+    "location": "Location",
+    "climate_title": "Climate",
+    "soil_title": "Soil",
+    "terrain_title": "Terrain",
+    "climate_data": "Climate Data",
+    "avg_temp": "Average Temperature",
+    "min_temp": "Min. Temp.",
+    "max_temp": "Max. Temp.",
+    "annual_precip": "Annual Precipitation",
+    "solar_radiation": "Solar Radiation",
+    "aridity_index": "Aridity Index",
+    "soil_data": "Soil Data",
+    "texture": "Texture",
+    "organic_matter": "Organic Matter",
+    "terrain_data": "Terrain Data",
+    "strengths": "Strengths",
+    "limitations": "Limitations",
+    "recommendation": "Recommendation"
+    ,
+    "error_generic": "Error analyzing crop suitability",
+    "error_422": "Error 422: Coordinates may be out of valid range or over the ocean. Try terrestrial coordinates.",
+    "error_nasa_power": "Climate data error",
+    "panel_title": "Crop Suitability Analysis for Quinoa",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "analyzing": "Analyzing...",
+    "analyze_location": "Analyze Location",
+    "collecting_data": "Collecting data from multiple sources...",
+    "suitability": "suitability",
+    "elevation": "Elevation",
+    "slope": "Slope",
+    "aspect": "Aspect"
+  }
+  ,
+  "indicators": {
+    "SURFACE_REFLECTANCE": {
+      "friendlyName": "Surface reflectance (MODIS — Bands 1,4,3)",
+      "description": "Multi-band surface reflectance (Bands 1-4-3) useful for vegetation analysis"
+    },
+    "THERMAL_ANOMALIES": {
+      "friendlyName": "Thermal anomalies & fire detection (VIIRS NOAA20)",
+      "description": "Thermal anomalies and active fire detections"
+    },
+    "CROPLANDS": {
+      "friendlyName": "Agricultural lands (global, 2000)",
+      "description": "Global map of agricultural lands and croplands (year 2000)"
+    },
+    "NDVI": {
+      "friendlyName": "NDVI — Vegetation index",
+      "description": "Normalized Difference Vegetation Index — measures vegetation health and density"
+    },
+    "EVI": {
+      "friendlyName": "EVI — Enhanced Vegetation Index",
+      "description": "Enhanced Vegetation Index — optimized for high biomass areas"
+    },
+    "LST_DAY": {
+      "friendlyName": "Land surface temperature — Day",
+      "description": "Land surface temperature during daytime"
+    },
+    "PRECIPITATION": {
+      "friendlyName": "Precipitation — Rate",
+      "description": "Precipitation rate from GPM IMERG"
+    },
+    "SNOW_COVER": {
+      "friendlyName": "Snow cover (8-day)",
+      "description": "Snow and ice cover (visible only in snow regions, 8-day data)"
+    },
+    "LST_NIGHT": {
+      "friendlyName": "Land surface temperature — Night",
+      "description": "Land surface temperature during nighttime"
+    },
+    "SOIL_MOISTURE": {
+      "friendlyName": "Surface soil moisture (SMAP)",
+      "description": "Surface soil moisture from SMAP"
+    },
+    "AEROSOL_OPTICAL_DEPTH": {
+      "friendlyName": "Aerosol Optical Depth",
+      "description": "Aerosol optical depth — indicator of air quality"
+    }
+  }
+}

@@ -47,6 +47,21 @@
   gap: 2px;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.language-switcher select {
+  background: transparent;
+  border: 1px solid var(--input-border);
+  color: var(--text-main);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
 .dashboard-header .dashboard-title {
   font-size: 22px;
   font-weight: 600;

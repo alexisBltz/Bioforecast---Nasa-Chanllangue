@@ -5,6 +5,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Slider from 'rc-slider';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { parseDate, formatDate } from '../utils/dateUtils';
 import { getIndicatorById } from '../services/gibsConfig';
@@ -187,14 +188,14 @@ const DateControls: React.FC = () => {
             <button
               onClick={togglePlay}
               className="play-button"
-              title={isPlaying ? 'Pausar animación' : 'Reproducir animación'}
+              title={isPlaying ? t('date_controls.pause_animation', 'Pause animation') : t('date_controls.play_animation', 'Play animation')}
               disabled={isPlaying && loading}
             >
-              {isPlaying ? (loading ? '⏳ Cargando...' : '⏸️ Pausar') : '▶️ Reproducir'}
+              {isPlaying ? (loading ? `${t('loading', 'Loading')} ⏳` : '⏸️ ' + t('date_controls.pause', 'Pause')) : '▶️ ' + t('date_controls.play', 'Play')}
             </button>
             <span className="date-counter">
               {currentIndex + 1} / {availableDates.length}
-              {isPlaying && loading && ' (cargando...)'}
+              {isPlaying && loading && ` (${t('loading', 'loading...')})`}
             </span>
           </div>
         </>
