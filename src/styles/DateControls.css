@@ -221,6 +221,44 @@
   text-align: center;
 }
 
+/* Fila combinada de fecha e intervalo */
+.date-interval-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.date-interval-row .date-picker-wrapper {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.date-interval-row .interval-selector-container {
+  width: 60px;
+  margin-bottom: 0;
+}
+
+.date-interval-row .interval-toggle-button {
+  width: 60px;
+  padding: 10px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  justify-content: center;
+  gap: 4px;
+}
+
+.date-interval-row .toggle-arrow {
+  margin-left: 0;
+  font-size: 8px;
+}
+
+.date-interval-row .interval-options {
+  width: 200px;
+  right: 0;
+  left: auto;
+}
+
 /* Date Picker */
 .date-picker-wrapper {
   margin-bottom: 12px;
@@ -359,6 +397,28 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+  }
+  
+  /* Ajustes para fila de fecha e intervalo en móviles */
+  .date-interval-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .date-interval-row .interval-selector-container {
+    width: 100%;
+  }
+  
+  .date-interval-row .interval-toggle-button {
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 12px;
+  }
+  
+  .date-interval-row .interval-options {
+    width: 100%;
+    left: 0;
+    right: 0;
   }
 }
 

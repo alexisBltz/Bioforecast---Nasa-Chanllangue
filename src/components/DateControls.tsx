@@ -105,64 +105,63 @@ const DateControls: React.FC = () => {
     <div className="control-section">
       <div className="date-controls-header">
         <label className="control-label">Control de Fechas</label>
-        <button 
-          className="today-button"
-          onClick={handleGoToToday}
-          disabled={isStatic}
-          title="Ir a la fecha más reciente"
-        >
-          📅 Hoy
-        </button>
+        {!isStatic && (
+          <button 
+            className="today-button"
+            onClick={handleGoToToday}
+            disabled={isStatic}
+            title="Ir a la fecha más reciente"
+          >
+            📅 Hoy
+          </button>
+        )}
       </div>
       
-
-      
-      {/* Selector de intervalo personalizado */}
-      {!isStatic && (
-        <div className="interval-selector-container">
-          <button 
-            className="interval-toggle-button"
-            onClick={() => setShowIntervalSelector(!showIntervalSelector)}
-            title="Cambiar intervalo entre fechas"
-          >
-            ⚙️ Intervalo: {dateInterval} día{dateInterval > 1 ? 's' : ''}
-            <span className={`toggle-arrow ${showIntervalSelector ? 'open' : ''}`}>▼</span>
-          </button>
-          
-          {showIntervalSelector && (
-            <div className="interval-options">
-              <div className="interval-options-header">
-                <span>Selecciona el salto entre fechas:</span>
-              </div>
-              <div className="interval-grid">
-                {intervalOptions.map(interval => (
-                  <button
-                    key={interval}
-                    className={`interval-option ${dateInterval === interval ? 'active' : ''}`}
-                    onClick={() => handleIntervalChange(interval)}
-                    title={`Salto de ${interval} día${interval > 1 ? 's' : ''}`}
-                  >
-                    {interval}d
-                  </button>
-                ))}
-              </div>
-              <div className="interval-help-text">
-                💡 Mayor intervalo = menos fechas, carga más rápida
-              </div>
-            </div>
-          )}
+      {/* Fecha e Intervalo en una sola línea */}
+      <div className="date-interval-row">
+        <div className="date-picker-wrapper">
+          <DatePicker
+            selected={parseDate(date)}
+            onChange={handleDatePickerChange}
+            dateFormat="yyyy-MM-dd"
+            className="date-picker-input"
+            disabled={isStatic}
+            placeholderText="Selecciona una fecha"
+          />
         </div>
-      )}
-      
-      <div className="date-picker-wrapper">
-        <DatePicker
-          selected={parseDate(date)}
-          onChange={handleDatePickerChange}
-          dateFormat="yyyy-MM-dd"
-          className="date-picker-input"
-          disabled={isStatic}
-          placeholderText="Selecciona una fecha"
-        />
+        
+        {!isStatic && (
+          <div className="interval-selector-container">
+            <button 
+              className="interval-toggle-button"
+              onClick={() => setShowIntervalSelector(!showIntervalSelector)}
+              title="Cambiar intervalo entre fechas"
+            >
+              {dateInterval}d
+              <span className={`toggle-arrow ${showIntervalSelector ? 'open' : ''}`}>▼</span>
+            </button>
+            
+            {showIntervalSelector && (
+              <div className="interval-options">
+                <div className="interval-options-header">
+                  <span>Intervalo (días):</span>
+                </div>
+                <div className="interval-grid">
+                  {intervalOptions.map(interval => (
+                    <button
+                      key={interval}
+                      className={`interval-option ${dateInterval === interval ? 'active' : ''}`}
+                      onClick={() => handleIntervalChange(interval)}
+                      title={`Salto de ${interval} día${interval > 1 ? 's' : ''}`}
+                    >
+                      {interval}d
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       
       {!isStatic && availableDates.length > 1 && (
