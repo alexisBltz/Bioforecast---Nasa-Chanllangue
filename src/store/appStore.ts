@@ -26,6 +26,7 @@ export interface AppStore {
   loading: boolean;
   error: string | null;
   dateInterval: number; // Intervalo de días entre fechas (1-30)
+  clickedCoords: [number, number] | null; // NUEVO: Coordenadas clickeadas
   // Estado de modo floración
   bloomModeActive: boolean;
   savedStateBeforeBloom: {
@@ -41,6 +42,7 @@ export interface AppStore {
   setLayerOpacity: (layerId: string, opacity: number) => void; // NUEVO
   setDate: (date: string) => void;
   setMapView: (center: [number, number], zoom: number) => void;
+  setClickedCoords: (coords: [number, number] | null) => void; // NUEVO
   setOpacity: (opacity: number) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   setPlaySpeed: (speed: number) => void;
@@ -71,8 +73,9 @@ export const useAppStore = create<AppStore>((set, get) => {
     loading: false,
     error: null,
     dateInterval: 1, // Intervalo por defecto de 1 día
-  bloomModeActive: false,
-  savedStateBeforeBloom: null,
+    clickedCoords: null, // NUEVO: Inicialmente null
+    bloomModeActive: false,
+    savedStateBeforeBloom: null,
     
     // Acciones
     setIndicator: (indicator: string) => {
@@ -134,6 +137,10 @@ export const useAppStore = create<AppStore>((set, get) => {
         zoom,
         opacity: get().opacity,
       });
+    },
+    
+    setClickedCoords: (coords: [number, number] | null) => {
+      set({ clickedCoords: coords });
     },
     
     setOpacity: (opacity: number) => {

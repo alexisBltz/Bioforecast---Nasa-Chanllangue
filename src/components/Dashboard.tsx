@@ -15,6 +15,7 @@ import '../styles/Dashboard.css';
 
 const Dashboard: React.FC = () => {
   const activeLayers = useAppStore((state) => state.activeLayers);
+  
   return (
     <div className="dashboard">
       <div className="dashboard-header">

@@ -9,6 +9,8 @@ import type { LeafletMouseEvent } from 'leaflet';
 import { useAppStore } from '../store/appStore';
 import LayerManager from './LayerManager';
 import TimeSeriesModal from './TimeSeriesModal';
+import PointDataModal from './PointDataModal';
+import CropSuitabilityModal from './CropSuitabilityModal';
 import 'leaflet/dist/leaflet.css';
 import '../styles/MapView.css';
 
@@ -18,18 +20,36 @@ interface PopupContentProps {
   indicator: string;
   date: string;
   onAnalyzeClick: () => void;
+  onShowDataClick: () => void;
+  onShowSuitabilityClick: () => void;
 }
 
-const PopupContent: React.FC<PopupContentProps> = ({ lat, lng, indicator, date, onAnalyzeClick }) => (
+const PopupContent: React.FC<PopupContentProps> = ({ 
+  lat, 
+  lng, 
+  indicator, 
+  date, 
+  onAnalyzeClick,
+  onShowDataClick,
+  onShowSuitabilityClick
+}) => (
   <div className="popup-content">
-    <h3>Información del punto</h3>
+    <h3>📍 Punto Seleccionado</h3>
     <p><strong>Coordenadas:</strong> {lat.toFixed(4)}, {lng.toFixed(4)}</p>
     <p><strong>Indicador:</strong> {indicator}</p>
     <p><strong>Fecha:</strong> {date}</p>
-    <button className="popup-analyze-btn" onClick={onAnalyzeClick}>
-      📈 Ver Serie Temporal
-    </button>
-    <small>Visualización — no valores numéricos</small>
+    <div className="popup-actions">
+      <button className="popup-btn popup-data-btn" onClick={onShowDataClick}>
+        📊 Datos del Punto
+      </button>
+      <button className="popup-btn popup-analyze-btn" onClick={onAnalyzeClick}>
+        📈 Serie Temporal
+      </button>
+      <button className="popup-btn popup-suitability-btn" onClick={onShowSuitabilityClick}>
+        🌾 Aptitud Quinua
+      </button>
+    </div>
+    <small className="popup-note">Click en los botones para más información</small>
   </div>
 );
 
@@ -51,14 +71,18 @@ const MapEventHandler: React.FC = () => {
 const MapView: React.FC = () => {
   const mapRef = useRef<LeafletMap | null>(null);
   const { mapCenter, mapZoom, indicator, date } = useAppStore();
+  const setClickedCoords = useAppStore((state) => state.setClickedCoords);
   const [popupInfo, setPopupInfo] = useState<{ lat: number; lng: number; indicator: string; date: string } | null>(null);
   const [popupPosition, setPopupPosition] = useState<[number, number] | null>(null);
   const [showTimeSeries, setShowTimeSeries] = useState(false);
+  const [showPointData, setShowPointData] = useState(false);
+  const [showSuitability, setShowSuitability] = useState(false);
   const [timeSeriesCoords, setTimeSeriesCoords] = useState<{ lat: number; lon: number } | null>(null);
   
   const handleMapClick = (e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
     setPopupPosition([lat, lng]);
+    setClickedCoords([lat, lng]); // Guardar coordenadas clickeadas en el store
     setPopupInfo({
       lat,
       lng,
@@ -73,6 +97,16 @@ const MapView: React.FC = () => {
       setShowTimeSeries(true);
       setPopupPosition(null); // Cerrar el popup
     }
+  };
+
+  const handleShowDataClick = () => {
+    setShowPointData(true);
+    setPopupPosition(null); // Cerrar el popup
+  };
+
+  const handleShowSuitabilityClick = () => {
+    setShowSuitability(true);
+    setPopupPosition(null); // Cerrar el popup
   };
   
   return (
@@ -102,7 +136,12 @@ const MapView: React.FC = () => {
           <Popup position={popupPosition} eventHandlers={{
             remove: () => setPopupPosition(null)
           }}>
-            <PopupContent {...popupInfo} onAnalyzeClick={handleAnalyzeClick} />
+            <PopupContent 
+              {...popupInfo} 
+              onAnalyzeClick={handleAnalyzeClick}
+              onShowDataClick={handleShowDataClick}
+              onShowSuitabilityClick={handleShowSuitabilityClick}
+            />
           </Popup>
         )}
       </MapContainer>
@@ -113,6 +152,24 @@ const MapView: React.FC = () => {
           lat={timeSeriesCoords.lat}
           lon={timeSeriesCoords.lon}
           onClose={() => setShowTimeSeries(false)}
+        />
+      )}
+
+      {/* Point Data Modal */}
+      {showPointData && popupInfo && (
+        <PointDataModal
+          lat={popupInfo.lat}
+          lon={popupInfo.lng}
+          onClose={() => setShowPointData(false)}
+        />
+      )}
+
+      {/* Crop Suitability Modal */}
+      {showSuitability && popupInfo && (
+        <CropSuitabilityModal
+          lat={popupInfo.lat}
+          lon={popupInfo.lng}
+          onClose={() => setShowSuitability(false)}
         />
       )}
     </div>
