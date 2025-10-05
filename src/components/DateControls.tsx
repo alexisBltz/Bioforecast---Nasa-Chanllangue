@@ -99,16 +99,6 @@ const DateControls: React.FC = () => {
   const currentIndex = availableDates.indexOf(date);
   const isStatic = indicatorData?.timeResolution === 'static';
   
-  // Calcular rango de fechas visible
-  const getDateRange = () => {
-    if (availableDates.length === 0) return { start: '', end: '' };
-    return {
-      start: availableDates[0],
-      end: availableDates[availableDates.length - 1]
-    };
-  };
-  
-  const dateRange = getDateRange();
   const intervalOptions = [1, 2, 3, 4, 5, 7, 10, 15, 20, 30];
   
   return (
@@ -125,28 +115,7 @@ const DateControls: React.FC = () => {
         </button>
       </div>
       
-      {/* Barra de rango de fechas */}
-      {!isStatic && dateRange.start && dateRange.end && (
-        <div className="date-range-bar">
-          <div className="date-range-info">
-            <span className="range-label">Rango disponible:</span>
-            <div className="range-dates">
-              <span className="range-start">{dateRange.start}</span>
-              <span className="range-separator">→</span>
-              <span className="range-end">{dateRange.end}</span>
-            </div>
-          </div>
-          <div className="date-range-stats">
-            <span className="stats-item">
-              <strong>{availableDates.length}</strong> fechas
-            </span>
-            <span className="stats-separator">•</span>
-            <span className="stats-item">
-              Intervalo: <strong>{dateInterval}</strong> día{dateInterval > 1 ? 's' : ''}
-            </span>
-          </div>
-        </div>
-      )}
+
       
       {/* Selector de intervalo personalizado */}
       {!isStatic && (
