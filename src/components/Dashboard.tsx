@@ -27,8 +27,8 @@ const Dashboard: React.FC = () => {
       <div className="dashboard-content">
         <IndicatorSelector />
         {activeLayers.length > 1 && <MultiLayerSelector />}
-        <DateControls />
         <OpacityControl />
+        <DateControls />
         <LegendPanel />
         <MetadataCard />
         <ActionButtons />
