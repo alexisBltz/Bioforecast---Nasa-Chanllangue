@@ -79,7 +79,15 @@ export const useAppStore = create<AppStore>((set, get) => {
 
       const newDate = availableDates[0];
 
-      set({ indicator, availableDates, date: newDate, loading: true, error: null });
+      // Si solo hay una capa activa en el store, reemplazarla por el nuevo indicador
+      const currentLayers = get().activeLayers || [];
+      let newActiveLayers = currentLayers;
+      if (currentLayers.length === 1) {
+        const existing = currentLayers[0];
+        newActiveLayers = [{ id: indicator, opacity: existing?.opacity ?? 0.8, visible: true }];
+      }
+
+      set({ indicator, availableDates, date: newDate, loading: true, error: null, activeLayers: newActiveLayers });
 
       // Actualizar URL
       updateURL({
