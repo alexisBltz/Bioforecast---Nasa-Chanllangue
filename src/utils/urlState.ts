@@ -13,7 +13,7 @@ export interface AppState {
 }
 
 const DEFAULT_STATE: AppState = {
-  indicator: 'TRUE_COLOR',
+  indicator: 'NDVI',
   date: new Date().toISOString().split('T')[0],
   lat: 0,
   lng: 0,

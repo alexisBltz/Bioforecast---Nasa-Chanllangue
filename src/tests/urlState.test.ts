@@ -8,7 +8,7 @@ describe('urlState', () => {
   describe('serializeState', () => {
     it('debe serializar el estado a query params', () => {
       const state = {
-        indicator: 'TRUE_COLOR',
+        indicator: 'NDVI',
         date: '2024-10-04',
         lat: 40.7128,
         lng: -74.006,
@@ -18,7 +18,7 @@ describe('urlState', () => {
 
       const queryString = serializeState(state);
       
-      expect(queryString).toContain('indicator=TRUE_COLOR');
+  expect(queryString).toContain('indicator=NDVI');
       expect(queryString).toContain('date=2024-10-04');
       expect(queryString).toContain('zoom=8');
     });
@@ -54,7 +54,7 @@ describe('urlState', () => {
       
       const state = deserializeState(queryString);
       
-      expect(state.indicator).toBe('TRUE_COLOR');
+  expect(state.indicator).toBe('NDVI');
       expect(state.zoom).toBe(3);
       expect(state.opacity).toBe(0.8);
     });
