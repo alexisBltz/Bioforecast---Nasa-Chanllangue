@@ -10,6 +10,7 @@ import L from 'leaflet';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { DEFAULT_MIN_ZOOM } from '../config/constants';
+import { LandSeaService } from '../services/landSeaService';
 import LayerManager from './LayerManager';
 import PointDataModal from './PointDataModal';
 import CropSuitabilityModal from './CropSuitabilityModal';
@@ -80,6 +81,7 @@ const MapEventHandler: React.FC = () => {
 
 
 const MapView: React.FC = () => {
+  const { t } = useTranslation();
   const mapRef = useRef<LeafletMap | null>(null);
   const { mapCenter, mapZoom, indicator, date } = useAppStore();
   const setClickedCoords = useAppStore((state) => state.setClickedCoords);
@@ -87,6 +89,7 @@ const MapView: React.FC = () => {
   const [popupPosition, setPopupPosition] = useState<[number, number] | null>(null);
   const [showPointData, setShowPointData] = useState(false);
   const [showSuitability, setShowSuitability] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
 
   // Efecto para configurar límites del mapa cuando se monte
   useEffect(() => {
@@ -123,23 +126,62 @@ const MapView: React.FC = () => {
     }
   }, [mapCenter, mapZoom]);
   
-  const handleMapClick = (e: LeafletMouseEvent) => {
+  const handleMapClick = async (e: LeafletMouseEvent) => {
     // Si ya hay un modal abierto, cerrarlo en lugar de abrir uno nuevo
     if (showPointData || showSuitability) {
       closeAllModals();
       return;
     }
 
-    // Si no hay modal abierto, proceder normalmente
+    // Si está validando, no procesar nuevos clicks
+    if (isValidating) {
+      return;
+    }
+
     const { lat, lng } = e.latlng;
-    setPopupPosition([lat, lng]);
-    setClickedCoords([lat, lng]); // Guardar coordenadas clickeadas en el store
-    setPopupInfo({
-      lat,
-      lng,
-      indicator,
-      date,
-    });
+
+    try {
+      setIsValidating(true);
+      
+      // Validar si el punto está en tierra
+      const validation = await LandSeaService.validateLandPoint(lat, lng);
+      
+      if (!validation.isLand) {
+        // Mostrar mensaje de error específico
+        const message = validation.confidence === 'high' 
+          ? t('map.ocean_point_error', 'No se puede obtener información de puntos en el océano')
+          : t('map.ocean_point_warning', 'Este punto parece estar en el océano. No se puede obtener información.');
+        
+        console.log(`${message}\n\n${t('map.validation_source', 'Verificado con')}: ${validation.source}`);
+        return;
+      }
+      
+      // Si la confianza es baja, mostrar advertencia pero permitir continuar
+      if (validation.confidence === 'low') {
+        const proceed = confirm(
+          `${t('map.low_confidence_warning', 'No se pudo verificar completamente la ubicación.')}\n\n` +
+          `${validation.message}\n\n` +
+          `${t('map.continue_anyway', '¿Continuar de todas formas?')}`
+        );
+        if (!proceed) return;
+      }
+      
+      // Proceder normalmente si está en tierra
+      setPopupPosition([lat, lng]);
+      setClickedCoords([lat, lng]);
+      setPopupInfo({
+        lat,
+        lng,
+        indicator,
+        date,
+      });
+      
+    } catch (error) {
+      console.error('Error validando ubicación:', error);
+      console.log(t('map.validation_error', 'Error al validar la ubicación. Intente nuevamente.'));
+    } finally {
+      setIsValidating(false);
+    }
   };
   
   const handleMapRightClick = () => {

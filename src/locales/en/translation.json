@@ -124,7 +124,13 @@
     "coordinates": "Coordinates",
     "point_data": "Point Data",
     "quinoa_suitability": "Quinoa Suitability",
-    "click_buttons_info": "Click buttons for more information"
+    "click_buttons_info": "Click buttons for more information",
+    "ocean_point_error": "Cannot get information from points in the ocean",
+    "ocean_point_warning": "This point appears to be in the ocean. Cannot get information.",
+    "validation_source": "Verified with",
+    "low_confidence_warning": "Could not fully verify the location.",
+    "continue_anyway": "Continue anyway?",
+    "validation_error": "Error validating location. Please try again."
   },
   "point_data": {
     "title": "Selected Point Data",

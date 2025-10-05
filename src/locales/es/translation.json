@@ -124,7 +124,13 @@
     "coordinates": "Coordenadas",
     "point_data": "Datos del Punto",
     "quinoa_suitability": "Aptitud Quinua",
-    "click_buttons_info": "Click en los botones para más información"
+    "click_buttons_info": "Click en los botones para más información",
+    "ocean_point_error": "No se puede obtener información de puntos en el océano",
+    "ocean_point_warning": "Este punto parece estar en el océano. No se puede obtener información.",
+    "validation_source": "Verificado con",
+    "low_confidence_warning": "No se pudo verificar completamente la ubicación.",
+    "continue_anyway": "¿Continuar de todas formas?",
+    "validation_error": "Error al validar la ubicación. Intente nuevamente."
   },
   "point_data": {
     "title": "Datos del Punto Seleccionado",
