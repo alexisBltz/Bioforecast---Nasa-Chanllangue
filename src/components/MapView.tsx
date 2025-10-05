@@ -54,19 +54,29 @@ const PopupContent: React.FC<PopupContentProps> = ({
 );
 
 const MapEventHandler: React.FC = () => {
+  const { mapCenter, mapZoom } = useAppStore();
   const setMapView = useAppStore((state) => state.setMapView);
   
   useMapEvents({
-    moveend: (e) => {
+    moveend(e) {
       const map = e.target;
       const center = map.getCenter();
       const zoom = map.getZoom();
-      setMapView([center.lat, center.lng], zoom);
+
+      // ⚠️ Solo actualizar si hay cambio real
+      if (
+        mapCenter[0] !== center.lat ||
+        mapCenter[1] !== center.lng ||
+        mapZoom !== zoom
+      ) {
+        setMapView([center.lat, center.lng], zoom);
+      }
     },
   });
-  
+
   return null;
 };
+
 
 const MapView: React.FC = () => {
   const mapRef = useRef<LeafletMap | null>(null);
