@@ -8,7 +8,6 @@ import { Map as LeafletMap } from 'leaflet';
 import type { LeafletMouseEvent } from 'leaflet';
 import { useAppStore } from '../store/appStore';
 import LayerManager from './LayerManager';
-import TimeSeriesModal from './TimeSeriesModal';
 import PointDataModal from './PointDataModal';
 import CropSuitabilityModal from './CropSuitabilityModal';
 import 'leaflet/dist/leaflet.css';
@@ -19,7 +18,6 @@ interface PopupContentProps {
   lng: number;
   indicator: string;
   date: string;
-  onAnalyzeClick: () => void;
   onShowDataClick: () => void;
   onShowSuitabilityClick: () => void;
 }
@@ -29,7 +27,6 @@ const PopupContent: React.FC<PopupContentProps> = ({
   lng, 
   indicator, 
   date, 
-  onAnalyzeClick,
   onShowDataClick,
   onShowSuitabilityClick
 }) => (
@@ -41,9 +38,6 @@ const PopupContent: React.FC<PopupContentProps> = ({
     <div className="popup-actions">
       <button className="popup-btn popup-data-btn" onClick={onShowDataClick}>
         📊 Datos del Punto
-      </button>
-      <button className="popup-btn popup-analyze-btn" onClick={onAnalyzeClick}>
-        📈 Serie Temporal
       </button>
       <button className="popup-btn popup-suitability-btn" onClick={onShowSuitabilityClick}>
         🌾 Aptitud Quinua
@@ -84,10 +78,8 @@ const MapView: React.FC = () => {
   const setClickedCoords = useAppStore((state) => state.setClickedCoords);
   const [popupInfo, setPopupInfo] = useState<{ lat: number; lng: number; indicator: string; date: string } | null>(null);
   const [popupPosition, setPopupPosition] = useState<[number, number] | null>(null);
-  const [showTimeSeries, setShowTimeSeries] = useState(false);
   const [showPointData, setShowPointData] = useState(false);
   const [showSuitability, setShowSuitability] = useState(false);
-  const [timeSeriesCoords, setTimeSeriesCoords] = useState<{ lat: number; lon: number } | null>(null);
   
   const handleMapClick = (e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
@@ -101,14 +93,6 @@ const MapView: React.FC = () => {
     });
   };
   
-  const handleAnalyzeClick = () => {
-    if (popupInfo) {
-      setTimeSeriesCoords({ lat: popupInfo.lat, lon: popupInfo.lng });
-      setShowTimeSeries(true);
-      setPopupPosition(null); // Cerrar el popup
-    }
-  };
-
   const handleShowDataClick = () => {
     setShowPointData(true);
     setPopupPosition(null); // Cerrar el popup
@@ -148,22 +132,12 @@ const MapView: React.FC = () => {
           }}>
             <PopupContent 
               {...popupInfo} 
-              onAnalyzeClick={handleAnalyzeClick}
               onShowDataClick={handleShowDataClick}
               onShowSuitabilityClick={handleShowSuitabilityClick}
             />
           </Popup>
         )}
       </MapContainer>
-      
-      {/* Time Series Modal */}
-      {showTimeSeries && timeSeriesCoords && (
-        <TimeSeriesModal
-          lat={timeSeriesCoords.lat}
-          lon={timeSeriesCoords.lon}
-          onClose={() => setShowTimeSeries(false)}
-        />
-      )}
 
       {/* Point Data Modal */}
       {showPointData && popupInfo && (

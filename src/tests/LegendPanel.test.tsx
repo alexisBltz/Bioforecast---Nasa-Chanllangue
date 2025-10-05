@@ -18,14 +18,4 @@ describe('LegendPanel', () => {
     
     expect(screen.getByText('Leyenda')).toBeInTheDocument();
   });
-
-  it('debe mostrar mensaje cuando no hay leyenda disponible', () => {
-    (useAppStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      indicator: 'TRUE_COLOR',
-    });
-
-    render(<LegendPanel />);
-    
-    expect(screen.getByText(/no tiene leyenda gráfica/)).toBeInTheDocument();
-  });
 });

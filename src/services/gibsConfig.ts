@@ -26,20 +26,6 @@ export const GIBS_BASE_URLS = {
 };
 
 export const INDICATORS: Record<string, GIBSIndicator> = {
-  TRUE_COLOR: {
-    id: 'TRUE_COLOR',
-    friendlyName: 'True Color (MODIS Terra)',
-    gibsLayerName: 'MODIS_Terra_CorrectedReflectance_TrueColor',
-    serviceType: 'WMTS',
-    timeResolution: 'daily',
-    legendURL: '',
-    preferredCRS: 'EPSG:3857',
-    spatialResolution: '250m',
-    description: 'Imagen de color real de la superficie terrestre captada por MODIS Terra',
-    docURL: 'https://worldview.earthdata.nasa.gov/?l=MODIS_Terra_CorrectedReflectance_TrueColor',
-    startDate: '2000-02-24',
-    format: 'image/jpeg',
-  },
   SURFACE_REFLECTANCE: {
     id: 'SURFACE_REFLECTANCE',
     friendlyName: 'Surface Reflectance (MODIS Bands 1-4)',

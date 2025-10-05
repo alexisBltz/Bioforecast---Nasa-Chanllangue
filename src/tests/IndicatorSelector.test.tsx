@@ -12,7 +12,7 @@ describe('IndicatorSelector', () => {
   it('debe renderizar el selector de indicadores', () => {
     const mockSetIndicator = vi.fn();
     (useAppStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      indicator: 'TRUE_COLOR',
+      indicator: 'NDVI',
       setIndicator: mockSetIndicator,
     });
 
@@ -25,7 +25,7 @@ describe('IndicatorSelector', () => {
   it('debe llamar a setIndicator cuando se cambia el valor', () => {
     const mockSetIndicator = vi.fn();
     (useAppStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      indicator: 'TRUE_COLOR',
+      indicator: 'NDVI',
       setIndicator: mockSetIndicator,
     });
 

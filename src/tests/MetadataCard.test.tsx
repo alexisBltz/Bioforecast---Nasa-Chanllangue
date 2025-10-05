@@ -11,7 +11,7 @@ vi.mock('../store/appStore');
 describe('MetadataCard', () => {
   it('debe renderizar la metadata del indicador', () => {
     (useAppStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      indicator: 'TRUE_COLOR',
+      indicator: 'NDVI',
       loading: false,
     });
 
@@ -23,7 +23,7 @@ describe('MetadataCard', () => {
 
   it('debe mostrar el indicador de carga cuando loading es true', () => {
     (useAppStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      indicator: 'TRUE_COLOR',
+      indicator: 'NDVI',
       loading: true,
     });
 
