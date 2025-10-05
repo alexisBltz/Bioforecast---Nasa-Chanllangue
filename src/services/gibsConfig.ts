@@ -28,7 +28,7 @@ export const GIBS_BASE_URLS = {
 export const INDICATORS: Record<string, GIBSIndicator> = {
   SURFACE_REFLECTANCE: {
     id: 'SURFACE_REFLECTANCE',
-    friendlyName: 'Surface Reflectance (MODIS Bands 1-4)',
+    friendlyName: 'Reflectancia superficial (MODIS — bandas 1,4,3)',
     gibsLayerName: 'MODIS_Terra_SurfaceReflectance_Bands143',
     serviceType: 'WMS',
     timeResolution: 'daily',
@@ -42,7 +42,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   THERMAL_ANOMALIES: {
     id: 'THERMAL_ANOMALIES',
-    friendlyName: 'Thermal Anomalies (VIIRS/NOAA20)',
+    friendlyName: 'Anomalías térmicas y detección de fuegos (VIIRS NOAA20)',
     gibsLayerName: 'VIIRS_NOAA20_Thermal_Anomalies_375m_All',
     serviceType: 'WMS',
     timeResolution: 'daily',
@@ -56,7 +56,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   CROPLANDS: {
     id: 'CROPLANDS',
-    friendlyName: 'Croplands (Global)',
+    friendlyName: 'Tierras agrícolas (mapa global, año 2000)',
     gibsLayerName: 'Agricultural_Lands_Croplands_2000',
     serviceType: 'WMS',
     timeResolution: 'static',
@@ -72,7 +72,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   // NUEVOS INDICADORES PARA MONITOREO DE FLORACIÓN
   NDVI: {
     id: 'NDVI',
-    friendlyName: 'NDVI (Índice Vegetación)',
+    friendlyName: 'NDVI — Índice de vegetación (salud y densidad)',
     gibsLayerName: 'MODIS_Terra_NDVI_8Day',
     serviceType: 'WMS',
     timeResolution: '8-day',
@@ -86,7 +86,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   EVI: {
     id: 'EVI',
-    friendlyName: 'EVI (Vegetación Mejorado)',
+    friendlyName: 'EVI — Índice de vegetación mejorado (alta biomasa)',
     gibsLayerName: 'MODIS_Terra_EVI_8Day',
     serviceType: 'WMS',
     timeResolution: '8-day',
@@ -100,7 +100,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   LST_DAY: {
     id: 'LST_DAY',
-    friendlyName: 'Temperatura Superficial (Día)',
+    friendlyName: 'Temperatura de superficie — Día',
     gibsLayerName: 'MODIS_Terra_Land_Surface_Temp_Day',
     serviceType: 'WMS',
     timeResolution: 'daily',
@@ -114,7 +114,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   PRECIPITATION: {
     id: 'PRECIPITATION',
-    friendlyName: 'Precipitación',
+    friendlyName: 'Precipitación — Tasa (GPM IMERG)',
     gibsLayerName: 'IMERG_Precipitation_Rate',
     serviceType: 'WMS',
     timeResolution: 'daily',
@@ -128,7 +128,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   SNOW_COVER: {
     id: 'SNOW_COVER',
-    friendlyName: 'Cobertura de Nieve',
+    friendlyName: 'Cobertura de nieve (mapa cada 8 días)',
     gibsLayerName: 'MODIS_Terra_NDSI_Snow_Cover',
     serviceType: 'WMS',
     timeResolution: '8-day',
@@ -143,7 +143,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   // VARIABLES ADICIONALES PARA ANÁLISIS DE APTITUD
   LST_NIGHT: {
     id: 'LST_NIGHT',
-    friendlyName: 'Temperatura Superficial (Noche)',
+    friendlyName: 'Temperatura de superficie — Noche',
     gibsLayerName: 'MODIS_Terra_Land_Surface_Temp_Night',
     serviceType: 'WMS',
     timeResolution: 'daily',
@@ -157,7 +157,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   SOIL_MOISTURE: {
     id: 'SOIL_MOISTURE',
-    friendlyName: 'Humedad del Suelo',
+    friendlyName: 'Humedad del suelo superficial (SMAP)',
     gibsLayerName: 'SMAP_L4_Analyzed_Surface_Soil_Moisture',
     serviceType: 'WMS',
     timeResolution: 'daily',
@@ -171,7 +171,7 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
   },
   AEROSOL_OPTICAL_DEPTH: {
     id: 'AEROSOL_OPTICAL_DEPTH',
-    friendlyName: 'Profundidad Óptica de Aerosoles',
+    friendlyName: 'Aerosoles — Profundidad óptica (calidad del aire)',
     gibsLayerName: 'MODIS_Combined_MAIAC_L2G_AerosolOpticalDepth',
     serviceType: 'WMS',
     timeResolution: 'daily',
