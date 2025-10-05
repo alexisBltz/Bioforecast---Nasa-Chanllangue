@@ -3,6 +3,7 @@
  * Selector de indicador/producto satelital
  */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { getIndicatorsList } from '../services/gibsConfig';
 import '../styles/IndicatorSelector.css';
@@ -10,6 +11,7 @@ import '../styles/IndicatorSelector.css';
 const IndicatorSelector: React.FC = () => {
   const { indicator, setIndicator, activateBloomPreset, bloomModeActive } = useAppStore();
   const indicators = getIndicatorsList();
+  const { t } = useTranslation();
   
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setIndicator(e.target.value);
@@ -22,7 +24,7 @@ const IndicatorSelector: React.FC = () => {
   return (
     <div className="control-section">
       <label htmlFor="indicator-select" className="control-label">
-        Indicador
+        {t('indicator.label', 'Indicator')}
       </label>
       <select
         id="indicator-select"
@@ -42,11 +44,11 @@ const IndicatorSelector: React.FC = () => {
         onClick={handleBloomPreset}
         title={
           bloomModeActive
-            ? 'Desactiva el modo floración y vuelve a tu configuración anterior'
-            : 'Activa capas recomendadas para monitoreo de floración (NDVI + LST + Precipitación + Cultivos)'
+            ? t('bloom.deactivate_title', 'Disable bloom mode and restore previous configuration')
+            : t('bloom.activate_title', 'Activate recommended layers for bloom monitoring (NDVI + LST + Precipitation + Crops)')
         }
       >
-        {bloomModeActive ? '❌ Desactivar Modo Floración' : '🌸 Activar Modo Floración'}
+        {bloomModeActive ? (`❌ ${t('bloom.deactivate', 'Disable Bloom Mode')}`) : (`🌸 ${t('bloom.activate', 'Enable Bloom Mode')}`)}
       </button>
     </div>
   );

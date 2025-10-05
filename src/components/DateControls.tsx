@@ -5,6 +5,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Slider from 'rc-slider';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { parseDate, formatDate } from '../utils/dateUtils';
 import { getIndicatorById } from '../services/gibsConfig';
@@ -98,6 +99,7 @@ const DateControls: React.FC = () => {
   
   const currentIndex = availableDates.indexOf(date);
   const isStatic = indicatorData?.timeResolution === 'static';
+  const { t } = useTranslation();
   
   // Calcular rango de fechas visible
   const getDateRange = () => {
@@ -114,12 +116,12 @@ const DateControls: React.FC = () => {
   return (
     <div className="control-section">
       <div className="date-controls-header">
-        <label className="control-label">Control de Fechas</label>
+  <label className="control-label">{t('date_controls.title', 'Date Controls')}</label>
         <button 
           className="today-button"
           onClick={handleGoToToday}
           disabled={isStatic}
-          title="Ir a la fecha más reciente"
+          title={t('go_to_most_recent')}
         >
           📅 Hoy
         </button>
@@ -129,7 +131,7 @@ const DateControls: React.FC = () => {
       {!isStatic && dateRange.start && dateRange.end && (
         <div className="date-range-bar">
           <div className="date-range-info">
-            <span className="range-label">Rango disponible:</span>
+            <span className="range-label">{t('date_controls.range_label', 'Available range:')}</span>
             <div className="range-dates">
               <span className="range-start">{dateRange.start}</span>
               <span className="range-separator">→</span>
@@ -138,11 +140,11 @@ const DateControls: React.FC = () => {
           </div>
           <div className="date-range-stats">
             <span className="stats-item">
-              <strong>{availableDates.length}</strong> fechas
+              <strong>{availableDates.length}</strong> {t('date_controls.dates', 'dates')}
             </span>
             <span className="stats-separator">•</span>
             <span className="stats-item">
-              Intervalo: <strong>{dateInterval}</strong> día{dateInterval > 1 ? 's' : ''}
+              {t('date_controls.interval_label', 'Interval')}: <strong>{dateInterval}</strong> {t('date_controls.days', 'day')}{dateInterval > 1 ? 's' : ''}
             </span>
           </div>
         </div>
@@ -163,7 +165,7 @@ const DateControls: React.FC = () => {
           {showIntervalSelector && (
             <div className="interval-options">
               <div className="interval-options-header">
-                <span>Selecciona el salto entre fechas:</span>
+            <span>{t('date_controls.select_step', 'Select the step between dates:')}</span>
               </div>
               <div className="interval-grid">
                 {intervalOptions.map(interval => (
@@ -171,14 +173,14 @@ const DateControls: React.FC = () => {
                     key={interval}
                     className={`interval-option ${dateInterval === interval ? 'active' : ''}`}
                     onClick={() => handleIntervalChange(interval)}
-                    title={`Salto de ${interval} día${interval > 1 ? 's' : ''}`}
+                    title={t('date_controls.step_title', { count: interval, defaultValue: `Step of ${interval} day${interval > 1 ? 's' : ''}` })}
                   >
                     {interval}d
                   </button>
                 ))}
               </div>
               <div className="interval-help-text">
-                💡 Mayor intervalo = menos fechas, carga más rápida
+                {t('date_controls.interval_help', 'Bigger interval = fewer dates, faster loading')}
               </div>
             </div>
           )}
@@ -192,7 +194,7 @@ const DateControls: React.FC = () => {
           dateFormat="yyyy-MM-dd"
           className="date-picker-input"
           disabled={isStatic}
-          placeholderText="Selecciona una fecha"
+          placeholderText={t('date_controls.select_date', 'Select a date')}
         />
       </div>
       
@@ -219,14 +221,14 @@ const DateControls: React.FC = () => {
             <button
               onClick={togglePlay}
               className="play-button"
-              title={isPlaying ? 'Pausar animación' : 'Reproducir animación'}
+              title={isPlaying ? t('date_controls.pause_animation', 'Pause animation') : t('date_controls.play_animation', 'Play animation')}
               disabled={isPlaying && loading}
             >
-              {isPlaying ? (loading ? '⏳ Cargando...' : '⏸️ Pausar') : '▶️ Reproducir'}
+              {isPlaying ? (loading ? `${t('loading', 'Loading')} ⏳` : '⏸️ ' + t('date_controls.pause', 'Pause')) : '▶️ ' + t('date_controls.play', 'Play')}
             </button>
             <span className="date-counter">
               {currentIndex + 1} / {availableDates.length}
-              {isPlaying && loading && ' (cargando...)'}
+              {isPlaying && loading && ` (${t('loading', 'loading...')})`}
             </span>
           </div>
         </>

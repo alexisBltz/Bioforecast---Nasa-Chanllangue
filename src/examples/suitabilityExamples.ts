@@ -47,7 +47,7 @@ const getDateRange = () => {
  * Ejemplo 1: Obtener datos climáticos
  */
 export const exampleClimateData = async () => {
-  console.log('📊 EJEMPLO 1: Datos Climáticos\n');
+  console.log('📊 EXAMPLE 1: Climate Data\n');
   
   const { start, end } = getDateRange();
   
@@ -78,7 +78,7 @@ export const exampleClimateData = async () => {
  * Ejemplo 2: Obtener propiedades del suelo
  */
 export const exampleSoilData = async () => {
-  console.log('\n\n🌱 EJEMPLO 2: Propiedades del Suelo\n');
+  console.log('\n\n🌱 EXAMPLE 2: Soil Properties\n');
   
   const soil = await interpretSoilProperties(EXAMPLE_LAT, EXAMPLE_LON);
   
@@ -111,7 +111,7 @@ export const exampleSoilData = async () => {
  * Ejemplo 3: Obtener datos de terreno
  */
 export const exampleTerrainData = async () => {
-  console.log('\n\n⛰️ EJEMPLO 3: Topografía\n');
+  console.log('\n\n⛰️ EXAMPLE 3: Topography\n');
   
   const elevation = await fetchElevation(EXAMPLE_LAT, EXAMPLE_LON);
   console.log(`📍 Elevación: ${elevation.toFixed(0)} m.s.n.m.`);
@@ -136,22 +136,22 @@ export const exampleTerrainData = async () => {
  * Ejemplo 4: Análisis completo de aptitud
  */
 export const exampleFullAnalysis = async () => {
-  console.log('\n\n🎯 EJEMPLO 4: Análisis Completo de Aptitud\n');
+  console.log('\n\n🎯 EXAMPLE 4: Full Suitability Analysis\n');
   
   const analysis = await analyzeCropSuitability(EXAMPLE_LAT, EXAMPLE_LON);
   
-  console.log('📍 Ubicación:');
+  console.log('📍 Location:');
   console.log(`  Lat: ${analysis.location.latitude.toFixed(4)}°`);
   console.log(`  Lon: ${analysis.location.longitude.toFixed(4)}°`);
   
-  console.log('\n🌡️ Clima:');
-  console.log(`  Aptitud: ${analysis.climate.suitability} (${analysis.climate.suitabilityPercent.toFixed(0)}%)`);
+  console.log('\n🌡️ Climate:');
+  console.log(`  Suitability: ${analysis.climate.suitability} (${analysis.climate.suitabilityPercent.toFixed(0)}%)`);
   
-  console.log('\n🌱 Suelo:');
-  console.log(`  Aptitud: ${analysis.soil.suitability} (${analysis.soil.suitabilityPercent.toFixed(0)}%)`);
+  console.log('\n🌱 Soil:');
+  console.log(`  Suitability: ${analysis.soil.suitability} (${analysis.soil.suitabilityPercent.toFixed(0)}%)`);
   
-  console.log('\n⛰️ Terreno:');
-  console.log(`  Aptitud: ${analysis.terrain.suitability} (${analysis.terrain.suitabilityPercent.toFixed(0)}%)`);
+  console.log('\n⛰️ Terrain:');
+  console.log(`  Suitability: ${analysis.terrain.suitability} (${analysis.terrain.suitabilityPercent.toFixed(0)}%)`);
   
   console.log('\n' + '='.repeat(60));
   console.log(`📊 APTITUD GENERAL: ${analysis.overall.suitability}`);
@@ -171,7 +171,7 @@ export const exampleFullAnalysis = async () => {
   console.log('\n💡 Recomendación:');
   console.log(`  ${analysis.overall.recommendation}`);
   
-  console.log('\n\n📄 REPORTE COMPLETO:\n');
+  console.log('\n\n📄 FULL REPORT:\n');
   const report = generateSuitabilityReport(analysis);
   console.log(report);
   
@@ -182,9 +182,9 @@ export const exampleFullAnalysis = async () => {
  * Ejecutar todos los ejemplos
  */
 export const runAllExamples = async () => {
-  console.log('🚀 Iniciando ejemplos de servicios de aptitud...\n');
-  console.log('Ubicación de ejemplo: La Paz, Bolivia');
-  console.log(`Coordenadas: ${EXAMPLE_LAT}°, ${EXAMPLE_LON}°\n`);
+  console.log('🚀 Starting suitability service examples...\n');
+  console.log('Example location: La Paz, Bolivia');
+  console.log(`Coordinates: ${EXAMPLE_LAT}°, ${EXAMPLE_LON}°\n`);
   console.log('='.repeat(60));
   
   try {

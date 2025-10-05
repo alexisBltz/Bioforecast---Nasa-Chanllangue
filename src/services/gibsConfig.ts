@@ -25,6 +25,8 @@ export const GIBS_BASE_URLS = {
   LEGENDS: 'https://gibs.earthdata.nasa.gov/legends',
 };
 
+import i18n from '../i18n';
+
 export const INDICATORS: Record<string, GIBSIndicator> = {
   SURFACE_REFLECTANCE: {
     id: 'SURFACE_REFLECTANCE',
@@ -186,11 +188,21 @@ export const INDICATORS: Record<string, GIBSIndicator> = {
 };
 
 export const getIndicatorsList = (): GIBSIndicator[] => {
-  return Object.values(INDICATORS);
+  return Object.values(INDICATORS).map((ind) => ({
+    ...ind,
+    friendlyName: i18n.t(`indicators.${ind.id}.friendlyName`, { defaultValue: ind.friendlyName }),
+    description: i18n.t(`indicators.${ind.id}.description`, { defaultValue: ind.description }),
+  }));
 };
 
 export const getIndicatorById = (id: string): GIBSIndicator | undefined => {
-  return INDICATORS[id];
+  const ind = INDICATORS[id];
+  if (!ind) return undefined;
+  return {
+    ...ind,
+    friendlyName: i18n.t(`indicators.${ind.id}.friendlyName`, { defaultValue: ind.friendlyName }),
+    description: i18n.t(`indicators.${ind.id}.description`, { defaultValue: ind.description }),
+  };
 };
 
 /**

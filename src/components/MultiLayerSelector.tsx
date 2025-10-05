@@ -3,6 +3,7 @@
  * Selector multi-capa con checkboxes y controles de opacidad
  */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { getIndicatorsList } from '../services/gibsConfig';
 import Slider from 'rc-slider';
@@ -12,6 +13,7 @@ import '../styles/MultiLayerSelector.css';
 const MultiLayerSelector: React.FC = () => {
   const { activeLayers, toggleLayer, setLayerOpacity } = useAppStore();
   const indicators = getIndicatorsList();
+  const { t } = useTranslation();
   
   const isLayerActive = (layerId: string) => {
     const layer = activeLayers.find(l => l.id === layerId);
@@ -35,7 +37,7 @@ const MultiLayerSelector: React.FC = () => {
   return (
     <div className="control-section multi-layer-selector">
       <div className="section-header">
-        <label className="control-label">Capas Activas</label>
+        <label className="control-label">{t('multilayer.title', 'Active Layers')}</label>
       </div>
       
       
@@ -63,9 +65,9 @@ const MultiLayerSelector: React.FC = () => {
               {isActive && (
                 <div className="layer-controls">
                   <div className="opacity-control-compact">
-                    <label className="opacity-label">
-                      Opacidad: {Math.round(opacity * 100)}%
-                    </label>
+                      <label className="opacity-label">
+                        {t('opacity.label', 'Opacity')}: {Math.round(opacity * 100)}%
+                      </label>
                     <Slider
                       min={0}
                       max={100}

@@ -3,6 +3,7 @@
  * Control de opacidad del overlay
  */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'rc-slider';
 import { useAppStore } from '../store/appStore';
 import 'rc-slider/assets/index.css';
@@ -32,11 +33,12 @@ const OpacityControl: React.FC = () => {
   };
   
   const currentOpacity = getCurrentOpacity();
+  const { t } = useTranslation();
   
   return (
     <div className="control-section">
       <label className="control-label">
-        Opacidad ({Math.round(currentOpacity * 100)}%)
+        {t('opacity.label', 'Opacity')} ({Math.round(currentOpacity * 100)}%)
       </label>
       <div className="slider-wrapper">
         <Slider

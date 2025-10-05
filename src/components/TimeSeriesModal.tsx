@@ -3,6 +3,7 @@
  * Modal que muestra un gráfico de serie temporal para un punto específico
  */
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAppStore } from '../store/appStore';
 import { getIndicatorById } from '../services/gibsConfig';
@@ -26,6 +27,7 @@ const TimeSeriesModal: React.FC<TimeSeriesModalProps> = ({ lat, lon, onClose }) 
   const [error, setError] = useState<string | null>(null);
 
   const indicatorData = getIndicatorById(indicator);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     // Simular la obtención de datos de serie temporal
@@ -92,15 +94,15 @@ const TimeSeriesModal: React.FC<TimeSeriesModalProps> = ({ lat, lon, onClose }) 
     switch (indicator) {
       case 'NDVI':
       case 'EVI':
-        return 'Índice';
+        return t('timeseries.yaxis_index', 'Index');
       case 'LST_DAY':
-        return 'Temperatura (°C)';
+        return t('timeseries.yaxis_temperature', 'Temperature (°C)');
       case 'PRECIPITATION':
-        return 'Precipitación (mm)';
+        return t('timeseries.yaxis_precipitation', 'Precipitation (mm)');
       case 'SNOW_COVER':
-        return 'Cobertura (%)';
+        return t('timeseries.yaxis_snow', 'Cover (%)');
       default:
-        return 'Valor';
+        return t('timeseries.yaxis_value', 'Value');
     }
   };
 
@@ -109,12 +111,12 @@ const TimeSeriesModal: React.FC<TimeSeriesModalProps> = ({ lat, lon, onClose }) 
       <div className="timeseries-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div>
-            <h3>Serie Temporal - {indicatorData?.friendlyName || indicator}</h3>
+            <h3>{t('timeseries.title', 'Time Series')} - {indicatorData?.friendlyName || indicator}</h3>
             <p className="modal-coordinates">
               📍 Lat: {lat.toFixed(4)}° | Lon: {lon.toFixed(4)}°
             </p>
           </div>
-          <button className="modal-close-btn" onClick={onClose} aria-label="Cerrar">
+          <button className="modal-close-btn" onClick={onClose} aria-label={t('close') }>
             ✕
           </button>
         </div>
@@ -123,13 +125,13 @@ const TimeSeriesModal: React.FC<TimeSeriesModalProps> = ({ lat, lon, onClose }) 
           {loading && (
             <div className="loading-state">
               <div className="spinner"></div>
-              <p>Cargando datos...</p>
+              <p>{t('loading', 'Loading data...')}</p>
             </div>
           )}
 
           {error && (
             <div className="error-state">
-              <p>⚠️ {error}</p>
+              <p>⚠️ {t(error) || error}</p>
             </div>
           )}
 
@@ -144,7 +146,7 @@ const TimeSeriesModal: React.FC<TimeSeriesModalProps> = ({ lat, lon, onClose }) 
                       tick={{ fontSize: 12 }}
                       tickFormatter={(value) => {
                         const date = new Date(value);
-                        return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+                          return date.toLocaleDateString(i18n.language === 'es' ? 'es-ES' : 'en-US', { month: 'short', year: '2-digit' });
                       }}
                     />
                     <YAxis 
@@ -177,22 +179,22 @@ const TimeSeriesModal: React.FC<TimeSeriesModalProps> = ({ lat, lon, onClose }) 
               </div>
 
               <div className="timeseries-stats">
-                <h4>Estadísticas (Últimos 12 meses)</h4>
+                <h4>{t('timeseries.stats_title', 'Statistics (Last 12 months)')}</h4>
                 <div className="stats-row">
                   <div className="stat-item">
-                    <span className="stat-label">Promedio:</span>
+                    <span className="stat-label">{t('timeseries.avg', 'Average')}:</span>
                     <span className="stat-value">
                       {(data.reduce((sum, d) => sum + d.value, 0) / data.length).toFixed(2)}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Mínimo:</span>
+                    <span className="stat-label">{t('timeseries.min', 'Minimum')}:</span>
                     <span className="stat-value">
                       {Math.min(...data.map(d => d.value)).toFixed(2)}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Máximo:</span>
+                    <span className="stat-label">{t('timeseries.max', 'Maximum')}:</span>
                     <span className="stat-value">
                       {Math.max(...data.map(d => d.value)).toFixed(2)}
                     </span>

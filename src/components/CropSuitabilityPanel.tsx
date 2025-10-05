@@ -3,6 +3,7 @@
  * Panel para analizar aptitud de cultivo en ubicaciones específicas
  */
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { analyzeCropSuitability, type CropSuitabilityAnalysis } from '../services/cropSuitabilityService';
 import '../styles/CropSuitabilityPanel.css';
 
@@ -18,6 +19,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
   const [inputLat, setInputLat] = useState(latitude?.toString() || '-16.5');
   const [inputLon, setInputLon] = useState(longitude?.toString() || '-68.15');
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
 
   const handleAnalyze = async () => {
     const lat = parseFloat(inputLat);
@@ -62,7 +64,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
   return (
     <div className="crop-suitability-panel">
       <div className="panel-header" onClick={() => setExpanded(!expanded)}>
-        <h3>🌾 Análisis de Aptitud para Quinua</h3>
+        <h3>🌾 {t('crop.panel_title', 'Crop Suitability Analysis for Quinoa')}</h3>
         <button className="toggle-button">{expanded ? '▼' : '▶'}</button>
       </div>
 
@@ -70,7 +72,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
         <div className="panel-content">
           <div className="coordinates-input">
             <div className="input-group">
-              <label>Latitud:</label>
+              <label>{t('crop.latitude', 'Latitude')}:</label>
               <input
                 type="number"
                 value={inputLat}
@@ -80,7 +82,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
               />
             </div>
             <div className="input-group">
-              <label>Longitud:</label>
+              <label>{t('crop.longitude', 'Longitude')}:</label>
               <input
                 type="number"
                 value={inputLon}
@@ -96,7 +98,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
             onClick={handleAnalyze}
             disabled={loading}
           >
-            {loading ? '⏳ Analizando...' : '🔍 Analizar Ubicación'}
+            {loading ? `⏳ ${t('crop.analyzing', 'Analyzing...')}` : `🔍 ${t('crop.analyze_location', 'Analyze Location')}`}
           </button>
 
           {error && (
@@ -108,7 +110,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
           {loading && (
             <div className="loading-message">
               <div className="spinner"></div>
-              <p>Recopilando datos de múltiples fuentes...</p>
+              <p>{t('crop.collecting_data', 'Collecting data from multiple sources...')}</p>
               <small>
                 • NASA POWER (clima y radiación)
                 <br />
@@ -130,16 +132,16 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
                 <div className="suitability-header">
                   <span className="icon">{getSuitabilityIcon(analysis.overall.suitability)}</span>
                   <div>
-                    <h4>{analysis.overall.suitability}</h4>
-                    <p className="suitability-percent">
-                      {analysis.overall.suitabilityPercent.toFixed(0)}% de aptitud
-                    </p>
+                                <h4>{analysis.overall.suitability}</h4>
+                                <p className="suitability-percent">
+                                  {analysis.overall.suitabilityPercent.toFixed(0)}% {t('crop.suitability', 'suitability')}
+                                </p>
                   </div>
                 </div>
               </div>
 
               <div className="recommendation-box">
-                <h5>💡 Recomendación</h5>
+                <h5>💡 {t('crop.recommendation', 'Recommendation')}</h5>
                 <p>{analysis.overall.recommendation}</p>
               </div>
 
@@ -147,7 +149,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
                 {/* Sección Clima */}
                 <div className="analysis-section">
                   <div className="section-header">
-                    <h5>🌡️ Clima</h5>
+                    <h5>🌡️ {t('crop.climate_title', 'Climate')}</h5>
                     <span
                       className="section-badge"
                       style={{
@@ -161,19 +163,19 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
                   </div>
                   <div className="section-details">
                     <div className="detail-row">
-                      <span>Temperatura media:</span>
+                      <span>{t('crop.avg_temp', 'Average Temperature')}:</span>
                       <strong>{analysis.climate.temperature.mean.toFixed(1)}°C</strong>
                     </div>
                     <div className="detail-row">
-                      <span>Precipitación anual:</span>
+                      <span>{t('crop.annual_precip', 'Annual Precipitation')}:</span>
                       <strong>{analysis.climate.precipitation.annual.toFixed(0)} mm</strong>
                     </div>
                     <div className="detail-row">
-                      <span>Radiación solar:</span>
+                      <span>{t('crop.solar_radiation', 'Solar Radiation')}:</span>
                       <strong>{analysis.climate.solarRadiation.mean.toFixed(1)} W/m²</strong>
                     </div>
                     <div className="detail-row">
-                      <span>Índice de aridez:</span>
+                      <span>{t('crop.aridity_index', 'Aridity Index')}:</span>
                       <strong>
                         {analysis.climate.aridityIndex.toFixed(2)} ({analysis.climate.aridityClass})
                       </strong>
@@ -198,7 +200,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
                   </div>
                   <div className="section-details">
                     <div className="detail-row">
-                      <span>Textura:</span>
+                      <span>{t('crop.texture', 'Texture')}:</span>
                       <strong>{analysis.soil.texture}</strong>
                     </div>
                     <div className="detail-row">
@@ -206,7 +208,7 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
                       <strong>{analysis.soil.pH.toFixed(1)}</strong>
                     </div>
                     <div className="detail-row">
-                      <span>Materia orgánica:</span>
+                      <span>{t('crop.organic_matter', 'Organic Matter')}:</span>
                       <strong>{analysis.soil.organicMatter.toFixed(1)} g/kg</strong>
                     </div>
                   </div>
@@ -229,15 +231,15 @@ const CropSuitabilityPanel: React.FC<CropSuitabilityPanelProps> = ({ latitude, l
                   </div>
                   <div className="section-details">
                     <div className="detail-row">
-                      <span>Elevación:</span>
+                      <span>{t('crop.elevation', 'Elevation')}:</span>
                       <strong>{analysis.terrain.elevation.toFixed(0)} m.s.n.m.</strong>
                     </div>
                     <div className="detail-row">
-                      <span>Pendiente:</span>
+                      <span>{t('crop.slope', 'Slope')}:</span>
                       <strong>{analysis.terrain.slope.toFixed(1)}°</strong>
                     </div>
                     <div className="detail-row">
-                      <span>Orientación:</span>
+                      <span>{t('crop.aspect', 'Aspect')}:</span>
                       <strong>{analysis.terrain.aspect}</strong>
                     </div>
                   </div>
