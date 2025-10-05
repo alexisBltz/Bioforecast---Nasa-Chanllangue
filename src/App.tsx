@@ -19,7 +19,7 @@ function App() {
   }, [initializeFromURL]);
   
   return (
-    <div className="app">
+    <div className={`app ${overlayOpen ? 'overlay-open' : ''}`}>
       <div className={`app-layout ${overlayOpen ? 'overlay-open' : ''}`}>
         <div className="map-section">
           <MapView />
