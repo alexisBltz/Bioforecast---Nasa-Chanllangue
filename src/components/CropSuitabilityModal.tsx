@@ -70,6 +70,52 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
     return '🚫';
   };
 
+  const translateSuitability = (suitabilityText: string): string => {
+    const suitabilityMap: Record<string, string> = {
+      'Altamente apto': t('crop.suitability_levels.highly_suitable', 'Altamente apto'),
+      'Apto': t('crop.suitability_levels.suitable', 'Apto'),
+      'Moderadamente apto': t('crop.suitability_levels.moderately_suitable', 'Moderadamente apto'),
+      'Marginalmente apto': t('crop.suitability_levels.marginally_suitable', 'Marginalmente apto'),
+      'No apto': t('crop.suitability_levels.not_suitable', 'No apto'),
+    };
+    return suitabilityMap[suitabilityText] || suitabilityText;
+  };
+
+  const translateLimitation = (limitationText: string): string => {
+    const limitationMap: Record<string, string> = {
+      'Temperatura fuera del rango óptimo': t('crop.limitations_common.temp_out_range', 'Temperatura fuera del rango óptimo'),
+      'Precipitación insuficiente o excesiva': t('crop.limitations_common.precip_insufficient', 'Precipitación insuficiente o excesiva'),
+      'Elevación no ideal': t('crop.limitations_common.elevation_not_ideal', 'Elevación no ideal'),
+      'Pendiente pronunciada': t('crop.limitations_common.steep_slope', 'Pendiente pronunciada'),
+      'pH del suelo no óptimo': t('crop.limitations_common.ph_not_optimal', 'pH del suelo no óptimo'),
+      'Drenaje deficiente': t('crop.limitations_common.poor_drainage', 'Drenaje deficiente'),
+    };
+    return limitationMap[limitationText] || limitationText;
+  };
+
+  const translateStrength = (strengthText: string): string => {
+    const strengthMap: Record<string, string> = {
+      'Temperatura adecuada': t('crop.strengths_common.temp_adequate', 'Temperatura adecuada'),
+      'Precipitación adecuada': t('crop.strengths_common.precip_adequate', 'Precipitación adecuada'),
+      'Elevación óptima para quinua': t('crop.strengths_common.elevation_optimal', 'Elevación óptima para quinua'),
+      'Topografía favorable': t('crop.strengths_common.favorable_topography', 'Topografía favorable'),
+      'pH del suelo adecuado': t('crop.strengths_common.ph_adequate', 'pH del suelo adecuado'),
+      'Buen drenaje del suelo': t('crop.strengths_common.good_drainage', 'Buen drenaje del suelo'),
+    };
+    return strengthMap[strengthText] || strengthText;
+  };
+
+  const translateRecommendation = (recommendationText: string): string => {
+    const recommendationMap: Record<string, string> = {
+      'Excelente ubicación para cultivo de quinua. Condiciones óptimas en la mayoría de variables.': t('crop.recommendations_text.excellent', 'Excelente ubicación para cultivo de quinua. Condiciones óptimas en la mayoría de variables.'),
+      'Buena ubicación para quinua. Algunas variables pueden mejorarse con manejo agronómico.': t('crop.recommendations_text.good', 'Buena ubicación para quinua. Algunas variables pueden mejorarse con manejo agronómico.'),
+      'Ubicación moderadamente apta. Requiere manejo cuidadoso y posibles mejoras del suelo.': t('crop.recommendations_text.moderate', 'Ubicación moderadamente apta. Requiere manejo cuidadoso y posibles mejoras del suelo.'),
+      'Ubicación marginalmente apta. Alto riesgo de rendimientos bajos. Considerar variedades resistentes.': t('crop.recommendations_text.marginal', 'Ubicación marginalmente apta. Alto riesgo de rendimientos bajos. Considerar variedades resistentes.'),
+      'Ubicación no recomendada para quinua. Considerar otros cultivos más adaptados.': t('crop.recommendations_text.not_recommended', 'Ubicación no recomendada para quinua. Considerar otros cultivos más adaptados.'),
+    };
+    return recommendationMap[recommendationText] || recommendationText;
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content crop-suitability-modal" onClick={(e) => e.stopPropagation()}>
@@ -120,7 +166,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                   className="suitability-label"
                   style={{ color: getSuitabilityColor(analysis.overall.suitabilityPercent) }}
                 >
-                  {analysis.overall.suitability}
+                  {translateSuitability(analysis.overall.suitability)}
                 </h3>
               </div>
 
@@ -138,7 +184,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                     ></div>
                   </div>
                   <p className="category-percent">
-                    {analysis.climate.suitabilityPercent.toFixed(0)}% - {analysis.climate.suitability}
+                    {analysis.climate.suitabilityPercent.toFixed(0)}% - {translateSuitability(analysis.climate.suitability)}
                   </p>
                 </div>
 
@@ -154,7 +200,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                     ></div>
                   </div>
                   <p className="category-percent">
-                    {analysis.soil.suitabilityPercent.toFixed(0)}% - {analysis.soil.suitability}
+                    {analysis.soil.suitabilityPercent.toFixed(0)}% - {translateSuitability(analysis.soil.suitability)}
                   </p>
                 </div>
 
@@ -170,7 +216,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                     ></div>
                   </div>
                   <p className="category-percent">
-                    {analysis.terrain.suitabilityPercent.toFixed(0)}% - {analysis.terrain.suitability}
+                    {analysis.terrain.suitabilityPercent.toFixed(0)}% - {translateSuitability(analysis.terrain.suitability)}
                   </p>
                 </div>
               </div>
@@ -237,17 +283,17 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                 <h4>⛰️ {t('crop.terrain_data', 'Terrain Data')}</h4>
                 <div className="details-grid">
                   <div className="detail-item">
-                    <span className="detail-label">Elevación:</span>
+                    <span className="detail-label">{t('crop.elevation', 'Elevación')}:</span>
                     <span className="detail-value">{analysis.terrain.elevation.toFixed(0)} m</span>
                     <span className="detail-score">({analysis.terrain.scores.elevation.toFixed(0)}%)</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Pendiente:</span>
+                    <span className="detail-label">{t('crop.slope', 'Pendiente')}:</span>
                     <span className="detail-value">{analysis.terrain.slope.toFixed(1)}%</span>
                     <span className="detail-score">({analysis.terrain.scores.slope.toFixed(0)}%)</span>
                   </div>
                   <div className="detail-item">
-                    <span className="detail-label">Aspecto:</span>
+                    <span className="detail-label">{t('crop.aspect', 'Aspecto')}:</span>
                     <span className="detail-value">{analysis.terrain.aspect}</span>
                     <span className="detail-score">({analysis.terrain.scores.aspect.toFixed(0)}%)</span>
                   </div>
@@ -260,7 +306,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                   <h4>✅ {t('crop.strengths', 'Strengths')}</h4>
                   <ul>
                     {analysis.overall.strengths.map((strength, index) => (
-                      <li key={index}>{strength}</li>
+                      <li key={index}>{translateStrength(strength)}</li>
                     ))}
                   </ul>
                 </div>
@@ -272,7 +318,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
                   <h4>⚠️ {t('crop.limitations', 'Limitations')}</h4>
                   <ul>
                     {analysis.overall.limitations.map((limitation, index) => (
-                      <li key={index}>{limitation}</li>
+                      <li key={index}>{translateLimitation(limitation)}</li>
                     ))}
                   </ul>
                 </div>
@@ -282,7 +328,7 @@ const CropSuitabilityModal: React.FC<CropSuitabilityModalProps> = ({ lat, lon, o
               {analysis.overall.recommendation && (
                 <div className="recommendations-section recommendations">
                   <h4>💡 {t('crop.recommendation', 'Recommendation')}</h4>
-                  <p>{analysis.overall.recommendation}</p>
+                  <p>{translateRecommendation(analysis.overall.recommendation)}</p>
                 </div>
               )}
             </div>

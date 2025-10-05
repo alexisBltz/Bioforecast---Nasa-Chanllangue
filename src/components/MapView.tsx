@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, Popup, useMapEvents } from 'react-leaflet';
 import { Map as LeafletMap } from 'leaflet';
 import type { LeafletMouseEvent } from 'leaflet';
 import L from 'leaflet';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { DEFAULT_MIN_ZOOM } from '../config/constants';
 import LayerManager from './LayerManager';
@@ -31,23 +32,27 @@ const PopupContent: React.FC<PopupContentProps> = ({
   date, 
   onShowDataClick,
   onShowSuitabilityClick
-}) => (
-  <div className="popup-content">
-    <h3>📍 Punto Seleccionado</h3>
-    <p><strong>Coordenadas:</strong> {lat.toFixed(4)}, {lng.toFixed(4)}</p>
-    <p><strong>Indicador:</strong> {indicator}</p>
-    <p><strong>Fecha:</strong> {date}</p>
-    <div className="popup-actions">
-      <button className="popup-btn popup-data-btn" onClick={onShowDataClick}>
-        📊 Datos del Punto
-      </button>
-      <button className="popup-btn popup-suitability-btn" onClick={onShowSuitabilityClick}>
-        🌾 Aptitud Quinua
-      </button>
+}) => {
+  const { t } = useTranslation();
+  
+  return (
+    <div className="popup-content">
+      <h3>📍 {t('map.selected_point', 'Punto Seleccionado')}</h3>
+      <p><strong>{t('map.coordinates', 'Coordenadas')}:</strong> {lat.toFixed(4)}, {lng.toFixed(4)}</p>
+      <p><strong>{t('indicator.label', 'Indicador')}:</strong> {indicator}</p>
+      <p><strong>{t('date_controls.select_date', 'Fecha')}:</strong> {date}</p>
+      <div className="popup-actions">
+        <button className="popup-btn popup-data-btn" onClick={onShowDataClick}>
+          📊 {t('map.point_data', 'Datos del Punto')}
+        </button>
+        <button className="popup-btn popup-suitability-btn" onClick={onShowSuitabilityClick}>
+          🌾 {t('map.quinoa_suitability', 'Aptitud Quinua')}
+        </button>
+      </div>
+      <small className="popup-note">{t('map.click_buttons_info', 'Click en los botones para más información')}</small>
     </div>
-    <small className="popup-note">Click en los botones para más información</small>
-  </div>
-);
+  );
+};
 
 const MapEventHandler: React.FC = () => {
   const { mapCenter, mapZoom } = useAppStore();

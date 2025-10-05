@@ -2,14 +2,16 @@
   "open_panel": "Abrir panel",
   "close_panel": "Cerrar panel",
   "go_to_most_recent": "Ir a la fecha más reciente",
-  "close": "Cerrar"
-  ,
+  "close": "Cerrar",
   "date_controls": {
     "title": "Control de Fechas",
     "range_label": "Rango disponible:",
     "dates": "fechas",
     "interval_label": "Intervalo",
     "days": "día",
+    "days_short": "d",
+    "today": "Hoy",
+    "change_interval": "Cambiar intervalo entre fechas",
     "select_step": "Selecciona el salto entre fechas:",
     "step_title": "Salto de {{count}} día",
     "interval_help": "Mayor intervalo = menos fechas, carga más rápida",
@@ -31,8 +33,7 @@
     "avg": "Promedio",
     "min": "Mínimo",
     "max": "Máximo"
-  }
-  ,
+  },
   "indicator": {
     "label": "Indicador"
   },
@@ -50,8 +51,7 @@
   },
   "dashboard": {
     "subtitle": "Visualizador de Fenología Satelital"
-  }
-  ,
+  },
   "crop": {
     "modal_title": "Análisis de Aptitud para Quinua",
     "loading": "Analizando condiciones agroclimáticas...",
@@ -73,8 +73,7 @@
     "terrain_data": "Datos de Terreno",
     "strengths": "Fortalezas",
     "limitations": "Limitaciones",
-    "recommendation": "Recomendación"
-    ,
+    "recommendation": "Recomendación",
     "error_generic": "Error al analizar aptitud del cultivo",
     "error_422": "Error 422: Las coordenadas pueden estar fuera del rango válido o en el océano. Intenta con coordenadas terrestres.",
     "error_nasa_power": "Error de datos climáticos",
@@ -87,9 +86,145 @@
     "suitability": "aptitud",
     "elevation": "Elevación",
     "slope": "Pendiente",
-    "aspect": "Orientación"
-  }
-  ,
+    "aspect": "Orientación",
+    "suitability_levels": {
+      "highly_suitable": "Altamente apto",
+      "suitable": "Apto",
+      "moderately_suitable": "Moderadamente apto",
+      "marginally_suitable": "Marginalmente apto",
+      "not_suitable": "No apto"
+    },
+    "limitations_common": {
+      "temp_out_range": "Temperatura fuera del rango óptimo",
+      "precip_insufficient": "Precipitación insuficiente o excesiva",
+      "elevation_not_ideal": "Elevación no ideal",
+      "steep_slope": "Pendiente pronunciada",
+      "ph_not_optimal": "pH del suelo no óptimo",
+      "poor_drainage": "Drenaje deficiente"
+    },
+    "strengths_common": {
+      "temp_adequate": "Temperatura adecuada",
+      "precip_adequate": "Precipitación adecuada",
+      "elevation_optimal": "Elevación óptima para quinua",
+      "favorable_topography": "Topografía favorable",
+      "ph_adequate": "pH del suelo adecuado",
+      "good_drainage": "Buen drenaje del suelo"
+    },
+    "recommendations_text": {
+      "excellent": "Excelente ubicación para cultivo de quinua. Condiciones óptimas en la mayoría de variables.",
+      "good": "Buena ubicación para quinua. Algunas variables pueden mejorarse con manejo agronómico.",
+      "moderate": "Ubicación moderadamente apta. Requiere manejo cuidadoso y posibles mejoras del suelo.",
+      "marginal": "Ubicación marginalmente apta. Alto riesgo de rendimientos bajos. Considerar variedades resistentes.",
+      "not_recommended": "Ubicación no recomendada para quinua. Considerar otros cultivos más adaptados."
+    }
+  },
+  "map": {
+    "click_info": "Haz clic en el mapa para obtener datos del punto",
+    "selected_point": "Punto Seleccionado",
+    "coordinates": "Coordenadas",
+    "point_data": "Datos del Punto",
+    "quinoa_suitability": "Aptitud Quinua",
+    "click_buttons_info": "Click en los botones para más información"
+  },
+  "point_data": {
+    "title": "Datos del Punto Seleccionado",
+    "collecting_data": "Recopilando datos del punto...",
+    "elevation": "Elevación",
+    "elevation_unit": "m.s.n.m.",
+    "temperature": "Temperatura",
+    "precipitation": "Precipitación",
+    "solar_radiation": "Radiación Solar",
+    "annual_average": "Promedio anual",
+    "soil_texture": "Textura del Suelo",
+    "soil_ph": "pH del Suelo",
+    "organic_carbon": "Carbono Orgánico",
+    "climate_note": "Los datos climáticos son promedios anuales (NASA POWER)",
+    "retry": "Reintentar",
+    "temperature_unit": "°C",
+    "precipitation_unit": "mm/día",
+    "solar_unit": "W/m²",
+    "carbon_unit": "g/kg"
+  },
+  "legend": {
+    "title": "Leyenda",
+    "legends": "Leyendas",
+    "loading": "Cargando leyenda...",
+    "no_legend": "No hay leyenda disponible para este indicador",
+    "expand": "Expandir",
+    "collapse": "Contraer",
+    "more_info": "Más información",
+    "not_available": "Leyenda no disponible",
+    "no_graphic": "Sin leyenda gráfica"
+  },
+  "metadata": {
+    "title": "Metadatos",
+    "layer_info": "Info Capa",
+    "layer": "Capa",
+    "spatial_resolution": "Resolución Espacial",
+    "temporal_resolution": "Resolución Temporal",
+    "temporal_short": "Temporal",
+    "spatial_short": "Espacial",
+    "description": "Descripción",
+    "documentation": "Documentación",
+    "view_docs": "Ver Documentación"
+  },
+  "actions": {
+    "download_image": "Descargar Imagen",
+    "temporal_comparison": "Comparación Temporal",
+    "time_series": "Serie Temporal",
+    "analysis": "Análisis",
+    "reset_view": "Restablecer vista del mapa",
+    "copy_link": "Copiar enlace para compartir",
+    "copy_error": "No se pudo copiar la URL al portapapeles"
+  },
+  "language": {
+    "spanish": "Español",
+    "english": "English",
+    "select_language": "Seleccionar idioma"
+  },
+  "errors": {
+    "generic": "Ha ocurrido un error",
+    "network": "Error de conexión",
+    "data_load": "Error al cargar los datos",
+    "invalid_coordinates": "Coordenadas inválidas"
+  },
+  "data_layers": {
+    "title": "Datos de Capas",
+    "toggle_panel": "Mostrar datos del punto seleccionado",
+    "toggle_center": "Mostrar datos del centro del mapa",
+    "selected_point_data": "Datos del Punto Seleccionado",
+    "center_data": "Datos del Centro del Mapa",
+    "coordinates": "Coordenadas",
+    "clicked_coordinate": "Coordenada clickeada en el mapa",
+    "auto_update": "Actualizar automáticamente",
+    "update_data": "Actualizar Datos",
+    "loading_data": "Cargando...",
+    "collecting_data": "Recopilando datos...",
+    "elevation_section": "Elevación",
+    "climate_section": "Clima (últimos 30 días)",
+    "soil_section": "Suelo",
+    "elevation_unit": "m.s.n.m.",
+    "temperature_label": "Temperatura",
+    "precipitation_label": "Precipitación",
+    "solar_radiation_label": "Radiación solar",
+    "texture_label": "Textura",
+    "ph_label": "pH",
+    "organic_carbon_label": "Carbono orgánico",
+    "temperature_unit": "°C",
+    "precipitation_unit": "mm/día",
+    "solar_unit": "W/m²",
+    "carbon_unit": "g/kg",
+    "tip_selected": "Haz click en otro punto del mapa para ver sus datos",
+    "tip_center": "Haz click en el mapa para seleccionar un punto específico",
+    "soil_textures": {
+      "sandy": "Arenoso",
+      "clayey": "Arcilloso",
+      "silty": "Limoso",
+      "sandy_loam": "Franco Arenoso",
+      "silty_loam": "Franco Limoso",
+      "loam": "Franco"
+    }
+  },
   "indicators": {
     "SURFACE_REFLECTANCE": {
       "friendlyName": "Reflectancia superficial (MODIS — bandas 1,4,3)",

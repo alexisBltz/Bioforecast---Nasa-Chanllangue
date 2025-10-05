@@ -2,14 +2,16 @@
   "open_panel": "Open panel",
   "close_panel": "Close panel",
   "go_to_most_recent": "Go to most recent date",
-  "close": "Close"
-  ,
+  "close": "Close",
   "date_controls": {
     "title": "Date Controls",
     "range_label": "Available range:",
     "dates": "dates",
     "interval_label": "Interval",
     "days": "day",
+    "days_short": "d",
+    "today": "Today",
+    "change_interval": "Change interval between dates",
     "select_step": "Select the step between dates:",
     "step_title": "Step of {{count}} day",
     "interval_help": "Bigger interval = fewer dates, faster loading",
@@ -31,8 +33,7 @@
     "avg": "Average",
     "min": "Minimum",
     "max": "Maximum"
-  }
-  ,
+  },
   "indicator": {
     "label": "Indicator"
   },
@@ -50,8 +51,7 @@
   },
   "dashboard": {
     "subtitle": "Satellite Phenology Viewer"
-  }
-  ,
+  },
   "crop": {
     "modal_title": "Crop Suitability Analysis for Quinoa",
     "loading": "Analyzing agroclimatic conditions...",
@@ -73,8 +73,7 @@
     "terrain_data": "Terrain Data",
     "strengths": "Strengths",
     "limitations": "Limitations",
-    "recommendation": "Recommendation"
-    ,
+    "recommendation": "Recommendation",
     "error_generic": "Error analyzing crop suitability",
     "error_422": "Error 422: Coordinates may be out of valid range or over the ocean. Try terrestrial coordinates.",
     "error_nasa_power": "Climate data error",
@@ -87,9 +86,145 @@
     "suitability": "suitability",
     "elevation": "Elevation",
     "slope": "Slope",
-    "aspect": "Aspect"
-  }
-  ,
+    "aspect": "Aspect",
+    "suitability_levels": {
+      "highly_suitable": "Highly suitable",
+      "suitable": "Suitable",
+      "moderately_suitable": "Moderately suitable",
+      "marginally_suitable": "Marginally suitable",
+      "not_suitable": "Not suitable"
+    },
+    "limitations_common": {
+      "temp_out_range": "Temperature outside optimal range",
+      "precip_insufficient": "Insufficient or excessive precipitation",
+      "elevation_not_ideal": "Non-ideal elevation",
+      "steep_slope": "Steep slope",
+      "ph_not_optimal": "Non-optimal soil pH",
+      "poor_drainage": "Poor drainage"
+    },
+    "strengths_common": {
+      "temp_adequate": "Adequate temperature",
+      "precip_adequate": "Adequate precipitation",
+      "elevation_optimal": "Optimal elevation for quinoa",
+      "favorable_topography": "Favorable topography",
+      "ph_adequate": "Adequate soil pH",
+      "good_drainage": "Good soil drainage"
+    },
+    "recommendations_text": {
+      "excellent": "Excellent location for quinoa cultivation. Optimal conditions in most variables.",
+      "good": "Good location for quinoa. Some variables can be improved with agronomic management.",
+      "moderate": "Moderately suitable location. Requires careful management and possible soil improvements.",
+      "marginal": "Marginally suitable location. High risk of low yields. Consider resistant varieties.",
+      "not_recommended": "Location not recommended for quinoa. Consider other more adapted crops."
+    }
+  },
+  "map": {
+    "click_info": "Click on the map to get point data",
+    "selected_point": "Selected Point",
+    "coordinates": "Coordinates",
+    "point_data": "Point Data",
+    "quinoa_suitability": "Quinoa Suitability",
+    "click_buttons_info": "Click buttons for more information"
+  },
+  "point_data": {
+    "title": "Selected Point Data",
+    "collecting_data": "Collecting point data...",
+    "elevation": "Elevation",
+    "elevation_unit": "m.a.s.l.",
+    "temperature": "Temperature",
+    "precipitation": "Precipitation",
+    "solar_radiation": "Solar Radiation",
+    "annual_average": "Annual average",
+    "soil_texture": "Soil Texture",
+    "soil_ph": "Soil pH",
+    "organic_carbon": "Organic Carbon",
+    "climate_note": "Climate data are annual averages (NASA POWER)",
+    "retry": "Retry",
+    "temperature_unit": "°C",
+    "precipitation_unit": "mm/day",
+    "solar_unit": "W/m²",
+    "carbon_unit": "g/kg"
+  },
+  "legend": {
+    "title": "Legend",
+    "legends": "Legends",
+    "loading": "Loading legend...",
+    "no_legend": "No legend available for this indicator",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "more_info": "More information",
+    "not_available": "Legend not available",
+    "no_graphic": "No graphic legend"
+  },
+  "metadata": {
+    "title": "Metadata",
+    "layer_info": "Layer Info",
+    "layer": "Layer",
+    "spatial_resolution": "Spatial Resolution",
+    "temporal_resolution": "Temporal Resolution",
+    "temporal_short": "Temporal",
+    "spatial_short": "Spatial",
+    "description": "Description",
+    "documentation": "Documentation",
+    "view_docs": "View Documentation"
+  },
+  "actions": {
+    "download_image": "Download Image",
+    "temporal_comparison": "Temporal Comparison",
+    "time_series": "Time Series",
+    "analysis": "Analysis",
+    "reset_view": "Reset map view",
+    "copy_link": "Copy link to share",
+    "copy_error": "Could not copy URL to clipboard"
+  },
+  "language": {
+    "spanish": "Español",
+    "english": "English",
+    "select_language": "Select language"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "network": "Network error",
+    "data_load": "Error loading data",
+    "invalid_coordinates": "Invalid coordinates"
+  },
+  "data_layers": {
+    "title": "Layer Data",
+    "toggle_panel": "Show selected point data",
+    "toggle_center": "Show map center data",
+    "selected_point_data": "Selected Point Data",
+    "center_data": "Map Center Data",
+    "coordinates": "Coordinates",
+    "clicked_coordinate": "Clicked coordinate on map",
+    "auto_update": "Auto update",
+    "update_data": "Update Data",
+    "loading_data": "Loading...",
+    "collecting_data": "Collecting data...",
+    "elevation_section": "Elevation",
+    "climate_section": "Climate (last 30 days)",
+    "soil_section": "Soil",
+    "elevation_unit": "m.a.s.l.",
+    "temperature_label": "Temperature",
+    "precipitation_label": "Precipitation",
+    "solar_radiation_label": "Solar radiation",
+    "texture_label": "Texture",
+    "ph_label": "pH",
+    "organic_carbon_label": "Organic carbon",
+    "temperature_unit": "°C",
+    "precipitation_unit": "mm/day",
+    "solar_unit": "W/m²",
+    "carbon_unit": "g/kg",
+    "tip_selected": "Click on another point on the map to see its data",
+    "tip_center": "Click on the map to select a specific point",
+    "soil_textures": {
+      "sandy": "Sandy",
+      "clayey": "Clayey",
+      "silty": "Silty",
+      "sandy_loam": "Sandy Loam",
+      "silty_loam": "Silty Loam",
+      "loam": "Loam"
+    }
+  },
   "indicators": {
     "SURFACE_REFLECTANCE": {
       "friendlyName": "Surface reflectance (MODIS — Bands 1,4,3)",

@@ -4,6 +4,7 @@
  * Muestra información puntual sobre el mapa para las variables de aptitud
  */
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { 
   fetchElevation,
@@ -31,11 +32,29 @@ interface PointData {
 }
 
 const DataLayersPanel: React.FC = () => {
+  const { t } = useTranslation();
   const clickedCoords = useAppStore((state) => state.clickedCoords);
   const mapCenter = useAppStore((state) => state.mapCenter);
   const [pointData, setPointData] = useState<PointData>({ loading: false });
   const [showPanel, setShowPanel] = useState(false);
   const [autoUpdate, setAutoUpdate] = useState(false);
+
+  const translateSoilTexture = (textureKey: string): string => {
+    const textureMap: Record<string, string> = {
+      'Arenoso': 'sandy',
+      'Arcilloso': 'clayey', 
+      'Limoso': 'silty',
+      'Franco Arenoso': 'sandy_loam',
+      'Franco Limoso': 'silty_loam',
+      'Franco': 'loam'
+    };
+    
+    const translationKey = textureMap[textureKey];
+    if (translationKey) {
+      return t(`data_layers.soil_textures.${translationKey}`);
+    }
+    return textureKey;
+  };
 
   // Usar coordenadas clickeadas si existen, sino usar el centro del mapa
   const activeCoords = clickedCoords || mapCenter;
@@ -128,7 +147,7 @@ const DataLayersPanel: React.FC = () => {
     } catch (error) {
       setPointData({
         loading: false,
-        error: error instanceof Error ? error.message : 'Error al cargar datos',
+        error: error instanceof Error ? error.message : t('errors.data_load'),
       });
     }
   };
@@ -144,27 +163,27 @@ const DataLayersPanel: React.FC = () => {
       <button
         className="toggle-panel-btn"
         onClick={() => setShowPanel(!showPanel)}
-        title={clickedCoords ? "Mostrar datos del punto seleccionado" : "Mostrar datos del centro del mapa"}
+        title={clickedCoords ? t('data_layers.toggle_panel') : t('data_layers.toggle_center')}
       >
-        📊 {clickedCoords ? 'Datos del Punto Seleccionado' : 'Datos del Centro'}
+        📊 {clickedCoords ? t('data_layers.selected_point_data') : t('data_layers.center_data')}
       </button>
 
       {showPanel && (
         <div className="data-panel-content">
           <div className="panel-header">
-            <h4>📍 {clickedCoords ? 'Datos del Punto Seleccionado' : 'Datos del Centro del Mapa'}</h4>
+            <h4>📍 {clickedCoords ? t('data_layers.selected_point_data') : t('data_layers.center_data')}</h4>
             <button className="close-btn" onClick={() => setShowPanel(false)}>
               ✕
             </button>
           </div>
 
           <div className="coordinates">
-            <strong>Coordenadas:</strong>
+            <strong>{t('data_layers.coordinates')}:</strong>
             <br />
             Lat: {activeCoords[0].toFixed(4)}° | Lon: {activeCoords[1].toFixed(4)}°
             {clickedCoords && (
               <div className="coord-note">
-                <small>✓ Coordenada clickeada en el mapa</small>
+                <small>✓ {t('data_layers.clicked_coordinate')}</small>
               </div>
             )}
           </div>
@@ -176,7 +195,7 @@ const DataLayersPanel: React.FC = () => {
                 checked={autoUpdate}
                 onChange={(e) => setAutoUpdate(e.target.checked)}
               />
-              Actualizar automáticamente
+              {t('data_layers.auto_update')}
             </label>
           </div>
 
@@ -186,14 +205,14 @@ const DataLayersPanel: React.FC = () => {
               onClick={fetchPointData}
               disabled={pointData.loading}
             >
-              {pointData.loading ? '⏳ Cargando...' : '🔄 Actualizar Datos'}
+              {pointData.loading ? `⏳ ${t('data_layers.loading_data')}` : `🔄 ${t('data_layers.update_data')}`}
             </button>
           )}
 
           {pointData.loading && (
             <div className="loading-indicator">
               <div className="spinner-small"></div>
-              <p>Recopilando datos...</p>
+              <p>{t('data_layers.collecting_data')}</p>
             </div>
           )}
 
@@ -207,27 +226,27 @@ const DataLayersPanel: React.FC = () => {
             <div className="data-sections">
               {/* Elevación */}
               <div className="data-section">
-                <h5>⛰️ Elevación</h5>
+                <h5>⛰️ {t('data_layers.elevation_section')}</h5>
                 <div className="data-value">
-                  {pointData.elevation.toFixed(0)} m.s.n.m.
+                  {pointData.elevation.toFixed(0)} {t('data_layers.elevation_unit')}
                 </div>
               </div>
 
               {/* Clima */}
               {pointData.climate && (
                 <div className="data-section">
-                  <h5>🌡️ Clima (últimos 30 días)</h5>
+                  <h5>🌡️ {t('data_layers.climate_section')}</h5>
                   <div className="data-item">
-                    <span>Temperatura:</span>
-                    <strong>{pointData.climate.temperature.toFixed(1)}°C</strong>
+                    <span>{t('data_layers.temperature_label')}:</span>
+                    <strong>{pointData.climate.temperature.toFixed(1)}{t('data_layers.temperature_unit')}</strong>
                   </div>
                   <div className="data-item">
-                    <span>Precipitación:</span>
-                    <strong>{pointData.climate.precipitation.toFixed(2)} mm/día</strong>
+                    <span>{t('data_layers.precipitation_label')}:</span>
+                    <strong>{pointData.climate.precipitation.toFixed(2)} {t('data_layers.precipitation_unit')}</strong>
                   </div>
                   <div className="data-item">
-                    <span>Radiación solar:</span>
-                    <strong>{pointData.climate.solarRadiation.toFixed(1)} W/m²</strong>
+                    <span>{t('data_layers.solar_radiation_label')}:</span>
+                    <strong>{pointData.climate.solarRadiation.toFixed(1)} {t('data_layers.solar_unit')}</strong>
                   </div>
                 </div>
               )}
@@ -235,18 +254,18 @@ const DataLayersPanel: React.FC = () => {
               {/* Suelo */}
               {pointData.soil && (
                 <div className="data-section">
-                  <h5>🌱 Suelo</h5>
+                  <h5>🌱 {t('data_layers.soil_section')}</h5>
                   <div className="data-item">
-                    <span>Textura:</span>
-                    <strong>{pointData.soil.texture}</strong>
+                    <span>{t('data_layers.texture_label')}:</span>
+                    <strong>{translateSoilTexture(pointData.soil.texture)}</strong>
                   </div>
                   <div className="data-item">
-                    <span>pH:</span>
+                    <span>{t('data_layers.ph_label')}:</span>
                     <strong>{pointData.soil.ph.toFixed(2)}</strong>
                   </div>
                   <div className="data-item">
-                    <span>Carbono orgánico:</span>
-                    <strong>{pointData.soil.organicCarbon.toFixed(1)} g/kg</strong>
+                    <span>{t('data_layers.organic_carbon_label')}:</span>
+                    <strong>{pointData.soil.organicCarbon.toFixed(1)} {t('data_layers.carbon_unit')}</strong>
                   </div>
                 </div>
               )}
@@ -256,8 +275,8 @@ const DataLayersPanel: React.FC = () => {
           <div className="panel-footer">
             <small>
               💡 Tip: {clickedCoords 
-                ? 'Haz click en otro punto del mapa para ver sus datos' 
-                : 'Haz click en el mapa para seleccionar un punto específico'}
+                ? t('data_layers.tip_selected')
+                : t('data_layers.tip_center')}
             </small>
           </div>
         </div>

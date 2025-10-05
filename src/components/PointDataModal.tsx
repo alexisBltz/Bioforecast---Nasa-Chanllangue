@@ -2,7 +2,8 @@
  * PointDataModal Component
  * Modal para mostrar datos detallados del punto seleccionado en el mapa
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   fetchElevation,
   fetchNASAPowerData,
@@ -35,13 +36,10 @@ interface PointData {
 }
 
 const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) => {
+  const { t } = useTranslation();
   const [pointData, setPointData] = useState<PointData>({ loading: true });
 
-  useEffect(() => {
-    fetchPointData();
-  }, [lat, lon]);
-
-  const fetchPointData = async () => {
+  const fetchPointData = useCallback(async () => {
     setPointData({ loading: true });
 
     try {
@@ -206,19 +204,23 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
         error: errorMessage,
       });
     }
-  };
+  }, [lat, lon]);
+
+  useEffect(() => {
+    fetchPointData();
+  }, [fetchPointData]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="point-data-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h3>📊 Datos del Punto Seleccionado</h3>
+          <h3>📊 {t('point_data.title', 'Datos del Punto Seleccionado')}</h3>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
         <div className="modal-body">
           <div className="coordinates-info">
-            <strong>📍 Coordenadas:</strong>
+            <strong>📍 {t('map.coordinates', 'Coordenadas')}:</strong>
             <div className="coord-values">
               <span>Lat: {lat.toFixed(4)}°</span>
               <span>Lon: {lon.toFixed(4)}°</span>
@@ -228,7 +230,7 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
           {pointData.loading && (
             <div className="loading-state">
               <div className="spinner"></div>
-              <p>Recopilando datos del punto...</p>
+              <p>{t('point_data.collecting_data', 'Recopilando datos del punto...')}</p>
             </div>
           )}
 
@@ -237,7 +239,7 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
               <span className="error-icon">❌</span>
               <p>{pointData.error}</p>
               <button onClick={fetchPointData} className="retry-btn">
-                🔄 Reintentar
+                🔄 {t('point_data.retry', 'Reintentar')}
               </button>
             </div>
           )}
@@ -247,10 +249,10 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
               {/* Elevación */}
               <div className="data-card">
                 <div className="card-icon">⛰️</div>
-                <h4>Elevación</h4>
+                <h4>{t('point_data.elevation', 'Elevación')}</h4>
                 <div className="card-value">
                   {pointData.elevation.toFixed(0)}
-                  <span className="unit">m.s.n.m.</span>
+                  <span className="unit">{t('point_data.elevation_unit', 'm.s.n.m.')}</span>
                 </div>
               </div>
 
@@ -259,32 +261,32 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
                 <>
                   <div className="data-card">
                     <div className="card-icon">🌡️</div>
-                    <h4>Temperatura</h4>
+                    <h4>{t('point_data.temperature', 'Temperatura')}</h4>
                     <div className="card-value">
                       {pointData.climate.temperature.toFixed(1)}
-                      <span className="unit">°C</span>
+                      <span className="unit">{t('point_data.temperature_unit', '°C')}</span>
                     </div>
-                    <small className="card-note">Promedio anual</small>
+                    <small className="card-note">{t('point_data.annual_average', 'Promedio anual')}</small>
                   </div>
 
                   <div className="data-card">
                     <div className="card-icon">💧</div>
-                    <h4>Precipitación</h4>
+                    <h4>{t('point_data.precipitation', 'Precipitación')}</h4>
                     <div className="card-value">
                       {pointData.climate.precipitation.toFixed(2)}
-                      <span className="unit">mm/día</span>
+                      <span className="unit">{t('point_data.precipitation_unit', 'mm/día')}</span>
                     </div>
-                    <small className="card-note">Promedio anual</small>
+                    <small className="card-note">{t('point_data.annual_average', 'Promedio anual')}</small>
                   </div>
 
                   <div className="data-card">
                     <div className="card-icon">☀️</div>
-                    <h4>Radiación Solar</h4>
+                    <h4>{t('point_data.solar_radiation', 'Radiación Solar')}</h4>
                     <div className="card-value">
                       {pointData.climate.solarRadiation.toFixed(1)}
-                      <span className="unit">W/m²</span>
+                      <span className="unit">{t('point_data.solar_unit', 'W/m²')}</span>
                     </div>
-                    <small className="card-note">Promedio anual</small>
+                    <small className="card-note">{t('point_data.annual_average', 'Promedio anual')}</small>
                   </div>
                 </>
               )}
@@ -294,7 +296,7 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
                 <>
                   <div className="data-card">
                     <div className="card-icon">🌱</div>
-                    <h4>Textura del Suelo</h4>
+                    <h4>{t('point_data.soil_texture', 'Textura del Suelo')}</h4>
                     <div className="card-value text-value">
                       {pointData.soil.texture}
                     </div>
@@ -302,7 +304,7 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
 
                   <div className="data-card">
                     <div className="card-icon">🧪</div>
-                    <h4>pH del Suelo</h4>
+                    <h4>{t('point_data.soil_ph', 'pH del Suelo')}</h4>
                     <div className="card-value">
                       {pointData.soil.ph.toFixed(2)}
                     </div>
@@ -310,10 +312,10 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
 
                   <div className="data-card">
                     <div className="card-icon">🍂</div>
-                    <h4>Carbono Orgánico</h4>
+                    <h4>{t('point_data.organic_carbon', 'Carbono Orgánico')}</h4>
                     <div className="card-value">
                       {pointData.soil.organicCarbon.toFixed(1)}
-                      <span className="unit">g/kg</span>
+                      <span className="unit">{t('point_data.carbon_unit', 'g/kg')}</span>
                     </div>
                   </div>
                 </>
@@ -324,10 +326,10 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
 
         <div className="modal-footer">
           <p className="footer-note">
-            💡 Los datos climáticos son promedios anuales (NASA POWER)
+            💡 {t('point_data.climate_note', 'Los datos climáticos son promedios anuales (NASA POWER)')}
           </p>
           <button className="close-footer-btn" onClick={onClose}>
-            Cerrar
+            {t('close', 'Cerrar')}
           </button>
         </div>
       </div>

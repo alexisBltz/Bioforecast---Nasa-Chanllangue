@@ -3,11 +3,13 @@
  * Muestra la leyenda de la(s) capa(s) activa(s)
  */
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { getIndicatorById } from '../services/gibsConfig';
 import '../styles/LegendPanel.css';
 
 const LegendPanel: React.FC = () => {
+  const { t } = useTranslation();
   const { indicator, activeLayers } = useAppStore();
   const [expandedLayers, setExpandedLayers] = useState<Set<string>>(new Set());
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
@@ -37,7 +39,7 @@ const LegendPanel: React.FC = () => {
     <div className="control-section legend-panel">
       <div className="legend-header">
         <label className="control-label">
-          {layersToShow.length > 1 ? 'Leyendas' : 'Leyenda'}
+          {layersToShow.length > 1 ? t('legend.legends', 'Leyendas') : t('legend.title', 'Leyenda')}
         </label>
       </div>
       
@@ -61,7 +63,7 @@ const LegendPanel: React.FC = () => {
                   <button
                     onClick={() => toggleExpand(layerId)}
                     className="legend-toggle"
-                    title={isExpanded ? 'Contraer' : 'Expandir'}
+                    title={isExpanded ? t('legend.collapse', 'Contraer') : t('legend.expand', 'Expandir')}
                   >
                     {isExpanded ? '▼' : '▶'}
                   </button>
@@ -98,14 +100,14 @@ const LegendPanel: React.FC = () => {
                         rel="noopener noreferrer"
                         className="legend-link"
                       >
-                        Más información →
+                        {t('legend.more_info', 'Más información')} →
                       </a>
                     </div>
                   )}
                 </>
               ) : (
                 <p className="legend-unavailable">
-                  {hasError ? 'Leyenda no disponible' : 'Sin leyenda gráfica'}
+                  {hasError ? t('legend.not_available', 'Leyenda no disponible') : t('legend.no_graphic', 'Sin leyenda gráfica')}
                 </p>
               )}
             </div>

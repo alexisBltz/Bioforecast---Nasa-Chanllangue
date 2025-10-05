@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [lang, setLang] = useState<string>(localStorage.getItem('bf_lang') || i18n.language || 'es');
 
   useEffect(() => {
@@ -12,14 +12,19 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <div className="language-switcher">
+      <label htmlFor="language-select" className="language-label">
+        🌐
+      </label>
       <select
+        id="language-select"
         value={lang}
         onChange={(e) => setLang(e.target.value)}
-        aria-label="Select language"
-        title="Select language"
+        aria-label={t('language.select_language', 'Select language')}
+        title={t('language.select_language', 'Select language')}
+        className="language-select"
       >
-        <option value="es">ES</option>
-        <option value="en">EN</option>
+        <option value="es">{t('language.spanish', 'Español')}</option>
+        <option value="en">{t('language.english', 'English')}</option>
       </select>
     </div>
   );

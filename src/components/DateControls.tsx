@@ -14,6 +14,7 @@ import 'rc-slider/assets/index.css';
 import '../styles/DateControls.css';
 
 const DateControls: React.FC = () => {
+  const { t } = useTranslation();
   const {
     date,
     setDate,
@@ -105,15 +106,15 @@ const DateControls: React.FC = () => {
   return (
     <div className="control-section">
       <div className="date-controls-header">
-        <label className="control-label">Control de Fechas</label>
+        <label className="control-label">{t('date_controls.title', 'Control de Fechas')}</label>
         {!isStatic && (
           <button 
             className="today-button"
             onClick={handleGoToToday}
             disabled={isStatic}
-            title="Ir a la fecha más reciente"
+            title={t('go_to_most_recent', 'Ir a la fecha más reciente')}
           >
-            📅 Hoy
+            📅 {t('date_controls.today', 'Hoy')}
           </button>
         )}
       </div>
@@ -127,7 +128,7 @@ const DateControls: React.FC = () => {
             dateFormat="yyyy-MM-dd"
             className="date-picker-input"
             disabled={isStatic}
-            placeholderText="Selecciona una fecha"
+            placeholderText={t('date_controls.select_date', 'Selecciona una fecha')}
           />
         </div>
         
@@ -136,9 +137,9 @@ const DateControls: React.FC = () => {
             <button 
               className="interval-toggle-button"
               onClick={() => setShowIntervalSelector(!showIntervalSelector)}
-              title="Cambiar intervalo entre fechas"
+              title={t('date_controls.change_interval', 'Cambiar intervalo entre fechas')}
             >
-              {dateInterval}d
+              {dateInterval}{t('date_controls.days_short', 'd')}
               <span className={`toggle-arrow ${showIntervalSelector ? 'open' : ''}`}>▼</span>
             </button>
             
