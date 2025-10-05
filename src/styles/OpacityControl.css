@@ -1,10 +1,31 @@
 /* OpacityControl Styles */
+.opacity-control-compact {
+  padding: 10px !important;
+}
+
+.opacity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.opacity-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: 'Courier New', monospace;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
 .opacity-slider {
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
 .slider-wrapper {
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 .opacity-slider .rc-slider-track {

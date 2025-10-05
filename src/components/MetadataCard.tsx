@@ -16,41 +16,37 @@ const MetadataCard: React.FC = () => {
   }
   
   return (
-    <div className="control-section metadata-card">
-      <label className="control-label">Información de la Capa</label>
+    <div className="control-section metadata-card-compact">
+      <label className="control-label">Info Capa</label>
       
-      <div className="metadata-content">
-        <div className="metadata-item">
-          <span className="metadata-key">Capa GIBS:</span>
-          <span className="metadata-value">{indicatorData.gibsLayerName}</span>
+      <div className="metadata-content-compact">
+        <div className="metadata-row">
+          <span className="metadata-label">Capa:</span>
+          <span className="metadata-value-short">{indicatorData.gibsLayerName}</span>
         </div>
         
-        <div className="metadata-item">
-          <span className="metadata-key">Resolución Temporal:</span>
-          <span className="metadata-value">{indicatorData.timeResolution}</span>
-        </div>
-        
-        <div className="metadata-item">
-          <span className="metadata-key">Resolución Espacial:</span>
-          <span className="metadata-value">{indicatorData.spatialResolution}</span>
-        </div>
-        
-        <div className="metadata-item">
-          <span className="metadata-key">Tipo de Servicio:</span>
-          <span className="metadata-value">{indicatorData.serviceType}</span>
+        <div className="metadata-grid">
+          <div className="metadata-mini">
+            <span className="mini-label">Temporal:</span>
+            <span className="mini-value">{indicatorData.timeResolution}</span>
+          </div>
+          <div className="metadata-mini">
+            <span className="mini-label">Espacial:</span>
+            <span className="mini-value">{indicatorData.spatialResolution}</span>
+          </div>
         </div>
         
         {loading && (
-          <div className="loading-indicator">
-            <svg className="spinner" viewBox="0 0 50 50" width="18" height="18" aria-hidden="true">
+          <div className="loading-indicator-compact">
+            <svg className="spinner" viewBox="0 0 50 50" width="14" height="14" aria-hidden="true">
               <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeDasharray="31.4 31.4">
               </circle>
             </svg>
-            Cargando capa...
+            <span>Cargando...</span>
           </div>
         )}
         {error && (
-          <div className="metadata-error">
+          <div className="metadata-error-compact">
             <strong>⚠️ {error}</strong>
           </div>
         )}

@@ -36,8 +36,8 @@ const Dashboard: React.FC = () => {
         <DateControls />
         <LegendPanel />
         <MetadataCard />
-        <ActionButtons />
       </div>
+      <ActionButtons />
       <div className="dashboard-footer">
         <p className="attribution">
           <small>

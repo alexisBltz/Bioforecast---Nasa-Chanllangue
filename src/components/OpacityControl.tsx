@@ -34,10 +34,11 @@ const OpacityControl: React.FC = () => {
   const currentOpacity = getCurrentOpacity();
   
   return (
-    <div className="control-section">
-      <label className="control-label">
-        Opacidad ({Math.round(currentOpacity * 100)}%)
-      </label>
+    <div className="control-section opacity-control-compact">
+      <div className="opacity-header">
+        <label className="control-label">Opacidad</label>
+        <span className="opacity-value">{Math.round(currentOpacity * 100)}%</span>
+      </div>
       <div className="slider-wrapper">
         <Slider
           min={0}

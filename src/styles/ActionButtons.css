@@ -16,6 +16,37 @@
   outline: none;
 }
 
+/* Botones compactos fijos */
+.action-buttons-fixed {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 1000;
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  padding: 6px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.action-button-compact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
 .reset-button {
   background: var(--input-bg);
   color: var(--text-secondary);
@@ -27,9 +58,23 @@
   border-color: var(--hover);
   transform: translateY(-1px);
 }
+
 .reset-button:focus-visible {
   box-shadow: 0 0 0 4px rgba(255,255,255,0.08);
 }
+
+.reset-button-compact {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reset-button-compact:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
 .share-button {
   background: linear-gradient(90deg, var(--accent) 0%, #059669 100%);
   color: var(--text-main);
@@ -39,10 +84,26 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(16, 185, 129, 0.16);
 }
+
 .share-button:focus-visible {
   box-shadow: 0 0 0 4px rgba(16,185,129,0.24);
 }
 
+.share-button-compact {
+  background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
+  color: white;
+  border: 1px solid var(--accent);
+}
+
+.share-button-compact:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
 .action-button:active {
   transform: translateY(0);
+}
+
+.action-button-compact:active {
+  transform: scale(0.95);
 }

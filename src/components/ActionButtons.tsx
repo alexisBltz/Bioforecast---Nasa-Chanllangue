@@ -27,13 +27,13 @@ const ActionButtons: React.FC = () => {
   };
   
   return (
-    <div className="control-section action-buttons">
-      <button onClick={handleReset} className="action-button reset-button">
-        🔄 Restablecer Vista
+    <div className="action-buttons-fixed">
+      <button onClick={handleReset} className="action-button-compact reset-button-compact" title="Restablecer vista del mapa">
+        🔄
       </button>
       
-      <button onClick={handleShare} className="action-button share-button">
-        {copySuccess ? '✅ Copiado!' : '🔗 Compartir Vista'}
+      <button onClick={handleShare} className="action-button-compact share-button-compact" title="Copiar enlace para compartir">
+        {copySuccess ? '✅' : '🔗'}
       </button>
     </div>
   );
