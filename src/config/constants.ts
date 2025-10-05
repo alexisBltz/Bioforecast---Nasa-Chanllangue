@@ -11,6 +11,9 @@ export const DEFAULT_MAP_CONFIG = {
   // Zoom inicial (nivel continental)
   ZOOM: 5,
   
+  // Zoom mínimo para evitar problemas de repetición mundial
+  MIN_ZOOM: 2,
+  
   // Opacidad inicial de las capas
   OPACITY: 0.9,
 } as const;
@@ -32,5 +35,6 @@ export const {
   LATITUDE: DEFAULT_LATITUDE,
   LONGITUDE: DEFAULT_LONGITUDE,
   ZOOM: DEFAULT_ZOOM,
+  MIN_ZOOM: DEFAULT_MIN_ZOOM,
   OPACITY: DEFAULT_OPACITY,
 } = DEFAULT_MAP_CONFIG;

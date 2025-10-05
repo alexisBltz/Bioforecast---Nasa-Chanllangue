@@ -5,6 +5,7 @@
 import React, { useEffect } from 'react';
 import { TileLayer, WMSTileLayer, useMapEvents } from 'react-leaflet';
 import type { LeafletMouseEvent } from 'leaflet';
+import L from 'leaflet';
 import { useAppStore } from '../store/appStore';
 import { useGIBSLayer } from '../hooks/useGIBSLayer';
 import { getIndicatorById } from '../services/gibsConfig';
@@ -66,6 +67,12 @@ const LayerTile: React.FC<LayerTileProps> = ({ indicatorId, date, opacity, visib
   const keyBase = `${indicatorId}-${layerConfig.usedDate || date}`;
 
   if (indicatorData.serviceType === 'WMS' && layerConfig.params) {
+    // Límites específicos de Web Mercator (EPSG:3857)
+    const webMercatorBounds = L.latLngBounds(
+      L.latLng(-85.051128, -180), // Suroeste
+      L.latLng(85.051128, 180)    // Noreste
+    );
+    
     return (
       <WMSTileLayer
         url={layerConfig.url}
@@ -73,17 +80,30 @@ const LayerTile: React.FC<LayerTileProps> = ({ indicatorId, date, opacity, visib
         opacity={opacity}
         attribution={layerConfig.attribution}
         key={keyBase}
+        bounds={webMercatorBounds}
+        noWrap={true}
+        minZoom={2}
+        maxZoom={18}
       />
     );
   }
 
   if (indicatorData.serviceType === 'WMTS') {
+    // Límites específicos de Web Mercator (EPSG:3857)
+    const webMercatorBounds = L.latLngBounds(
+      L.latLng(-85.051128, -180), // Suroeste
+      L.latLng(85.051128, 180)    // Noreste
+    );
+    
     return (
       <TileLayer
         url={layerConfig.url}
         opacity={opacity}
         attribution={layerConfig.attribution}
         key={keyBase}
+        bounds={webMercatorBounds}
+        noWrap={true}
+        minZoom={2}
         maxZoom={9}
       />
     );

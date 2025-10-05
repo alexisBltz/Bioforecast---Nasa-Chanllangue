@@ -6,7 +6,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Popup, useMapEvents } from 'react-leaflet';
 import { Map as LeafletMap } from 'leaflet';
 import type { LeafletMouseEvent } from 'leaflet';
+import L from 'leaflet';
 import { useAppStore } from '../store/appStore';
+import { DEFAULT_MIN_ZOOM } from '../config/constants';
 import LayerManager from './LayerManager';
 import PointDataModal from './PointDataModal';
 import CropSuitabilityModal from './CropSuitabilityModal';
@@ -81,6 +83,23 @@ const MapView: React.FC = () => {
   const [showPointData, setShowPointData] = useState(false);
   const [showSuitability, setShowSuitability] = useState(false);
 
+  // Efecto para configurar límites del mapa cuando se monte
+  useEffect(() => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      
+      // Configurar límites estrictos para Web Mercator una sola vez
+      const webMercatorBounds = L.latLngBounds(
+        L.latLng(-85.051128, -180), // Suroeste
+        L.latLng(85.051128, 180)    // Noreste
+      );
+      
+      map.setMaxBounds(webMercatorBounds);
+      map.options.maxBoundsViscosity = 1.0;
+      map.options.worldCopyJump = true;
+    }
+  }, []); // Solo ejecutar una vez al montar
+
   // Efecto para actualizar el mapa cuando cambien las coordenadas o zoom del store
   useEffect(() => {
     if (mapRef.current) {
@@ -130,11 +149,26 @@ const MapView: React.FC = () => {
         ref={mapRef}
         zoomControl={true}
         attributionControl={true}
+        // Prevenir repetición del mapa al cruzar la línea de fecha internacional
+        worldCopyJump={true}
+        // Limitar el mapa a las coordenadas mundiales válidas
+        maxBounds={[
+          [-90, -180], // Suroeste: latitud mínima, longitud mínima
+          [90, 180]    // Noreste: latitud máxima, longitud máxima
+        ]}
+        // Rigidez de los límites (1.0 = completamente rígido)
+        maxBoundsViscosity={1.0}
+        // Zoom mínimo para evitar duplicación de tiles
+        minZoom={DEFAULT_MIN_ZOOM}
       >
         {/* Basemap: OpenStreetMap */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          bounds={[[-85.051128, -180], [85.051128, 180]]}
+          noWrap={true}
+          minZoom={2}
+          maxZoom={18}
         />
         
         {/* GIBS Overlay Layer */}
