@@ -10,7 +10,7 @@ import 'rc-slider/assets/index.css';
 import '../styles/MultiLayerSelector.css';
 
 const MultiLayerSelector: React.FC = () => {
-  const { activeLayers, toggleLayer, setLayerOpacity, activateBloomPreset } = useAppStore();
+  const { activeLayers, toggleLayer, setLayerOpacity } = useAppStore();
   const indicators = getIndicatorsList();
   
   const isLayerActive = (layerId: string) => {
@@ -32,22 +32,13 @@ const MultiLayerSelector: React.FC = () => {
     setLayerOpacity(layerId, opacity / 100);
   };
   
-  const handleBloomPreset = () => {
-    activateBloomPreset();
-  };
-  
   return (
     <div className="control-section multi-layer-selector">
       <div className="section-header">
         <label className="control-label">Capas Activas</label>
-        <button onClick={handleBloomPreset} className="bloom-preset-button" title="Activa capas optimizadas para detección de floración">
-          🌸 Modo Floración
-        </button>
       </div>
       
-      <div className="bloom-preset-info">
-        <small>💡 Modo Floración: Combina NDVI, temperatura superficial, precipitación y cultivos para identificar períodos de floración probable.</small>
-      </div>
+      
       
       <div className="layers-list">
         {indicators.map((indicator) => {

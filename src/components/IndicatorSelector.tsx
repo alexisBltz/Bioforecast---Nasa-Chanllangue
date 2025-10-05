@@ -8,7 +8,7 @@ import { getIndicatorsList } from '../services/gibsConfig';
 import '../styles/IndicatorSelector.css';
 
 const IndicatorSelector: React.FC = () => {
-  const { indicator, setIndicator, activateBloomPreset } = useAppStore();
+  const { indicator, setIndicator, activateBloomPreset, bloomModeActive } = useAppStore();
   const indicators = getIndicatorsList();
   
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -40,9 +40,13 @@ const IndicatorSelector: React.FC = () => {
       <button 
         className="bloom-preset-btn"
         onClick={handleBloomPreset}
-        title="Activa capas recomendadas para monitoreo de floración (NDVI + EVI + LST)"
+        title={
+          bloomModeActive
+            ? 'Desactiva el modo floración y vuelve a tu configuración anterior'
+            : 'Activa capas recomendadas para monitoreo de floración (NDVI + LST + Precipitación + Cultivos)'
+        }
       >
-        🌸 Activar Modo Floración
+        {bloomModeActive ? '❌ Desactivar Modo Floración' : '🌸 Activar Modo Floración'}
       </button>
     </div>
   );
