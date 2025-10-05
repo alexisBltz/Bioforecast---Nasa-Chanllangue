@@ -9,25 +9,48 @@ import 'rc-slider/assets/index.css';
 import '../styles/OpacityControl.css';
 
 const OpacityControl: React.FC = () => {
-  const { opacity, setOpacity } = useAppStore();
+  const { opacity, setOpacity, indicator, activeLayers, setLayerOpacity } = useAppStore();
+  
+  // Obtener la opacidad de la capa actual del indicador activo
+  const getCurrentOpacity = () => {
+    const currentLayer = activeLayers.find(layer => layer.id === indicator);
+    return currentLayer ? currentLayer.opacity : opacity;
+  };
   
   const handleChange = (value: number | number[]) => {
     const opacityValue = Array.isArray(value) ? value[0] : value;
-    setOpacity(opacityValue / 100);
+    const normalizedOpacity = opacityValue / 100;
+    
+    // Actualizar tanto la opacidad global como la de la capa específica
+    setOpacity(normalizedOpacity);
+    
+    // Si existe la capa del indicador actual en activeLayers, actualizar su opacidad
+    const currentLayer = activeLayers.find(layer => layer.id === indicator);
+    if (currentLayer) {
+      setLayerOpacity(indicator, normalizedOpacity);
+    }
   };
+  
+  const currentOpacity = getCurrentOpacity();
   
   return (
     <div className="control-section">
       <label className="control-label">
-        Opacidad ({Math.round(opacity * 100)}%)
+        Opacidad ({Math.round(currentOpacity * 100)}%)
       </label>
       <div className="slider-wrapper">
         <Slider
           min={0}
           max={100}
-          value={opacity * 100}
+          value={Math.round(currentOpacity * 100)}
           onChange={handleChange}
           className="opacity-slider"
+          step={1}
+          trackStyle={{ backgroundColor: '#1976d2' }}
+          handleStyle={{
+            borderColor: '#1976d2',
+            backgroundColor: '#1976d2'
+          }}
         />
       </div>
     </div>

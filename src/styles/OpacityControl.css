@@ -2,3 +2,34 @@
 .opacity-slider {
   margin: 8px 0;
 }
+
+.slider-wrapper {
+  padding: 4px 0;
+}
+
+.opacity-slider .rc-slider-track {
+  background-color: #1976d2;
+  height: 4px;
+}
+
+.opacity-slider .rc-slider-rail {
+  background-color: #f0f0f0;
+  height: 4px;
+}
+
+.opacity-slider .rc-slider-handle {
+  border-color: #1976d2;
+  background-color: #1976d2;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  opacity: 1;
+}
+
+.opacity-slider .rc-slider-handle:hover,
+.opacity-slider .rc-slider-handle:active,
+.opacity-slider .rc-slider-handle:focus {
+  border-color: #1565c0;
+  background-color: #1565c0;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+}

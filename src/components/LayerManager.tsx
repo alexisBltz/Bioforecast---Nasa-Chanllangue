@@ -38,7 +38,7 @@ const LayerManager: React.FC<LayerManagerProps> = ({ onMapClick }) => {
     <>
       {layersToRender.map((layer) => (
         <LayerTile
-          key={`${layer.id}-${date}-${layer.opacity}`}
+          key={`${layer.id}-${date}`}
           indicatorId={layer.id}
           date={date}
           opacity={layer.opacity}
@@ -63,14 +63,14 @@ const LayerTile: React.FC<LayerTileProps> = ({ indicatorId, date, opacity, visib
   if (!visible || !layerConfig || !indicatorData) return null;
 
   // Usar usedDate en la key si está disponible para forzar nueva petición
-  const keyBase = `${indicatorId}-${layerConfig.usedDate || date}-${opacity}`;
+  const keyBase = `${indicatorId}-${layerConfig.usedDate || date}`;
 
   if (indicatorData.serviceType === 'WMS' && layerConfig.params) {
     return (
       <WMSTileLayer
         url={layerConfig.url}
         params={layerConfig.params}
-        opacity={layerConfig.opacity}
+        opacity={opacity}
         attribution={layerConfig.attribution}
         key={keyBase}
       />
@@ -81,7 +81,7 @@ const LayerTile: React.FC<LayerTileProps> = ({ indicatorId, date, opacity, visib
     return (
       <TileLayer
         url={layerConfig.url}
-        opacity={layerConfig.opacity}
+        opacity={opacity}
         attribution={layerConfig.attribution}
         key={keyBase}
         maxZoom={9}

@@ -54,21 +54,22 @@ export const useGIBSLayer = (
   date: string,
   opacity: number
 ): GIBSLayerConfig | null => {
-  const [layerConfig, setLayerConfig] = useState<GIBSLayerConfig | null>(null);
+  const [baseConfig, setBaseConfig] = useState<Omit<GIBSLayerConfig, 'opacity'> | null>(null);
   const setError = useAppStore((s) => s.setError);
 
+  // Efecto para calcular la configuración base (sin opacidad)
   useEffect(() => {
     const indicator = getIndicatorById(indicatorId);
 
     if (!indicator) {
-      setLayerConfig(null);
+      setBaseConfig(null);
       return;
     }
 
     const attribution = '© NASA GIBS / EOSDIS';
 
     // Ajustar fecha según resolución temporal
-    let usedDate = adjustDateForLayer(date, indicator.timeResolution);
+    const usedDate = adjustDateForLayer(date, indicator.timeResolution);
     let outOfRange = false;
 
     // Notificar si la fecha fue ajustada
@@ -87,11 +88,10 @@ export const useGIBSLayer = (
       // Configuración para WMS
       const params = getWMSParams(indicator, usedDate);
 
-      setLayerConfig({
+      setBaseConfig({
         url: GIBS_BASE_URLS.WMS_EPSG3857,
         params,
         attribution,
-        opacity,
         usedDate,
         outOfRange,
       });
@@ -99,17 +99,22 @@ export const useGIBSLayer = (
       const dateStr = usedDate; // mantener guiones: YYYY-MM-DD
       const tileUrlTemplate = `${GIBS_BASE_URLS.WMTS_EPSG3857}/${indicator.gibsLayerName}/default/${dateStr}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png`;
 
-      setLayerConfig({
+      setBaseConfig({
         url: tileUrlTemplate,
         attribution,
-        opacity,
         usedDate,
         outOfRange,
       });
     } else {
-      setLayerConfig(null);
+      setBaseConfig(null);
     }
-  }, [indicatorId, date, opacity, setError]);
+  }, [indicatorId, date, setError]); // Removido 'opacity' de las dependencias
 
-  return layerConfig;
+  // Retornar la configuración completa con la opacidad actual
+  if (!baseConfig) return null;
+  
+  return {
+    ...baseConfig,
+    opacity
+  };
 };
