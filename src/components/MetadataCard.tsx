@@ -8,7 +8,7 @@ import { getIndicatorById } from '../services/gibsConfig';
 import '../styles/MetadataCard.css';
 
 const MetadataCard: React.FC = () => {
-  const { indicator, loading } = useAppStore();
+  const { indicator, loading, error } = useAppStore();
   const indicatorData = getIndicatorById(indicator);
   
   if (!indicatorData) {
@@ -47,6 +47,11 @@ const MetadataCard: React.FC = () => {
               </circle>
             </svg>
             Cargando capa...
+          </div>
+        )}
+        {error && (
+          <div className="metadata-error">
+            <strong>⚠️ {error}</strong>
           </div>
         )}
       </div>

@@ -14,34 +14,57 @@ interface LayerManagerProps {
 }
 
 const LayerManager: React.FC<LayerManagerProps> = ({ onMapClick }) => {
-  const { indicator, date, opacity, setLoading } = useAppStore();
-  const layerConfig = useGIBSLayer(indicator, date, opacity);
-  
+  const { indicator, date, setLoading, activeLayers } = useAppStore();
+
   useMapEvents({
     click: onMapClick,
   });
-  
+
   useEffect(() => {
     // Simular carga de capa
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
-    
+    }, 800);
+
     return () => clearTimeout(timer);
   }, [indicator, date, setLoading]);
-  
-  if (!layerConfig) {
-    return null;
-  }
-  
-  const indicatorData = getIndicatorById(indicator);
-  
-  if (!indicatorData) {
-    return null;
-  }
-  
-  // Renderizar WMS Layer
+
+  const layersToRender = (activeLayers && activeLayers.length > 0)
+    ? activeLayers.filter(l => l.visible)
+    : [{ id: indicator, opacity: 1.0, visible: true }];
+
+  return (
+    <>
+      {layersToRender.map((layer) => (
+        <LayerTile
+          key={`${layer.id}-${date}-${layer.opacity}`}
+          indicatorId={layer.id}
+          date={date}
+          opacity={layer.opacity}
+          visible={layer.visible}
+        />
+      ))}
+    </>
+  );
+};
+
+interface LayerTileProps {
+  indicatorId: string;
+  date: string;
+  opacity: number;
+  visible: boolean;
+}
+
+const LayerTile: React.FC<LayerTileProps> = ({ indicatorId, date, opacity, visible }) => {
+  const layerConfig = useGIBSLayer(indicatorId, date, opacity);
+  const indicatorData = getIndicatorById(indicatorId);
+
+  if (!visible || !layerConfig || !indicatorData) return null;
+
+  // Usar usedDate en la key si está disponible para forzar nueva petición
+  const keyBase = `${indicatorId}-${layerConfig.usedDate || date}-${opacity}`;
+
   if (indicatorData.serviceType === 'WMS' && layerConfig.params) {
     return (
       <WMSTileLayer
@@ -49,24 +72,23 @@ const LayerManager: React.FC<LayerManagerProps> = ({ onMapClick }) => {
         params={layerConfig.params}
         opacity={layerConfig.opacity}
         attribution={layerConfig.attribution}
-        key={`${indicator}-${date}`}
+        key={keyBase}
       />
     );
   }
-  
-  // Renderizar WMTS/XYZ TileLayer
+
   if (indicatorData.serviceType === 'WMTS') {
     return (
       <TileLayer
         url={layerConfig.url}
         opacity={layerConfig.opacity}
         attribution={layerConfig.attribution}
-        key={`${indicator}-${date}`}
+        key={keyBase}
         maxZoom={9}
       />
     );
   }
-  
+
   return null;
 };
 
