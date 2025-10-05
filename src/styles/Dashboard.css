@@ -8,14 +8,58 @@
 }
 
 .dashboard-header {
-  padding: 4px 16px;
+  padding: 8px 8px;
   color: var(--text-main);
   border-bottom: 1px solid var(--sep);
+}
+
+.header-layout {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  min-height: 60px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.title-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.title-logo:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+.text-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  gap: 4px;
 }
 
 .dashboard-header .dashboard-title {
   font-size: 28px;
   font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.2;
 }
 
 .logo-bio {
@@ -30,7 +74,6 @@
 .subtitle {
   font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 12px;
 }
 
 .badge-visual {

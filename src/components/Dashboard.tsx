@@ -19,9 +19,14 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1 className="dashboard-title"><span className="logo-bio">Bio</span><span className="logo-forecast">Forecast</span></h1>
-        <p className="subtitle">Visualizador de Fenología Satelital</p>
-        <div className="badge-visual">
+        <div className="header-layout">
+          <div className="logo-section">
+            <img src="/logo.png" alt="BioForecast Logo" className="title-logo" />
+          </div>
+          <div className="text-section">
+            <h1 className="dashboard-title"><span className="logo-bio">Bio</span><span className="logo-forecast">Forecast</span></h1>
+            <p className="subtitle">Visualizador de Fenología Satelital</p>
+          </div>
         </div>
       </div>
       <div className="dashboard-content">
