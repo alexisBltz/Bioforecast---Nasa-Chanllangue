@@ -37,14 +37,13 @@
 }
 
 .popup-content {
-  padding: 12px;
+  padding: 4px;
   min-width: 250px;
 }
 
 .popup-content h3 {
   font-size: 16px;
   margin-bottom: 12px;
-  color: var(--text-main);
   font-weight: 600;
 }
 
