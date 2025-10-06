@@ -124,7 +124,10 @@
     "coordinates": "Coordenadas",
     "point_data": "Datos del Punto",
     "quinoa_suitability": "Aptitud Quinua",
-    "click_buttons_info": "Click en los botones para más información"
+    "click_buttons_info": "Click en los botones para más información",
+    "ocean_area": "Esta zona es océano",
+    "ocean_message": "No hay datos disponibles en áreas marinas",
+    "land_validation_loading": "Verificando ubicación..."
   },
   "point_data": {
     "title": "Datos del Punto Seleccionado",

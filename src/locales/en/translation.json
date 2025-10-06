@@ -124,7 +124,10 @@
     "coordinates": "Coordinates",
     "point_data": "Point Data",
     "quinoa_suitability": "Quinoa Suitability",
-    "click_buttons_info": "Click buttons for more information"
+    "click_buttons_info": "Click buttons for more information",
+    "ocean_area": "This area is ocean",
+    "ocean_message": "No data available in marine areas",
+    "land_validation_loading": "Verifying location..."
   },
   "point_data": {
     "title": "Selected Point Data",

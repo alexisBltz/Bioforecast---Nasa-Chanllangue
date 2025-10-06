@@ -44,3 +44,9 @@ export {
   generateSuitabilityReport,
   type CropSuitabilityAnalysis,
 } from './cropSuitabilityService';
+
+// Land/Sea Validation Service - Validación de tierra/mar
+export {
+  LandSeaService,
+  type LandValidationResult,
+} from './landSeaService';

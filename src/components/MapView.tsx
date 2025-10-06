@@ -10,9 +10,11 @@ import L from 'leaflet';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/appStore';
 import { DEFAULT_MIN_ZOOM } from '../config/constants';
+import { LandSeaService } from '../services/landSeaService';
 import LayerManager from './LayerManager';
 import PointDataModal from './PointDataModal';
 import CropSuitabilityModal from './CropSuitabilityModal';
+import Toast from './Toast';
 import 'leaflet/dist/leaflet.css';
 import '../styles/MapView.css';
 
@@ -87,6 +89,8 @@ const MapView: React.FC = () => {
   const [popupPosition, setPopupPosition] = useState<[number, number] | null>(null);
   const [showPointData, setShowPointData] = useState(false);
   const [showSuitability, setShowSuitability] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'info' | 'warning' | 'error' | 'success' } | null>(null);
+  const { t } = useTranslation();
 
   // Efecto para configurar límites del mapa cuando se monte
   useEffect(() => {
@@ -123,16 +127,44 @@ const MapView: React.FC = () => {
     }
   }, [mapCenter, mapZoom]);
   
-  const handleMapClick = (e: LeafletMouseEvent) => {
+  const handleMapClick = async (e: LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
-    setPopupPosition([lat, lng]);
-    setClickedCoords([lat, lng]); // Guardar coordenadas clickeadas en el store
-    setPopupInfo({
-      lat,
-      lng,
-      indicator,
-      date,
-    });
+    
+    try {
+      // Validar si el punto está en tierra o mar
+      const landResult = await LandSeaService.validateLandPoint(lat, lng);
+      
+      if (!landResult.isLand) {
+        // Si es mar, mostrar toast y no continuar
+        setToast({
+          message: t('map.ocean_message'),
+          type: 'info'
+        });
+        return;
+      }
+      
+      // Si es tierra, proceder normalmente
+      setPopupPosition([lat, lng]);
+      setClickedCoords([lat, lng]); // Guardar coordenadas clickeadas en el store
+      setPopupInfo({
+        lat,
+        lng,
+        indicator,
+        date,
+      });
+      
+    } catch (error) {
+      console.error('Error validating land/sea:', error);
+      // En caso de error, proceder normalmente (mejor UX)
+      setPopupPosition([lat, lng]);
+      setClickedCoords([lat, lng]);
+      setPopupInfo({
+        lat,
+        lng,
+        indicator,
+        date,
+      });
+    }
   };
   
   const handleShowDataClick = () => {
@@ -211,6 +243,15 @@ const MapView: React.FC = () => {
           lat={popupInfo.lat}
           lon={popupInfo.lng}
           onClose={() => setShowSuitability(false)}
+        />
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
       )}
     </div>
