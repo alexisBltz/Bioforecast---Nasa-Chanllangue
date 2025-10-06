@@ -56,13 +56,6 @@ const PointDataModal: React.FC<PointDataModalProps> = ({ lat, lon, onClose }) =>
       const formatDate = (date: Date) =>
         date.toISOString().split('T')[0].replace(/-/g, '');
 
-      console.log('Fetching NASA POWER data:', {
-        lat,
-        lon,
-        start: formatDate(startDate),
-        end: formatDate(endDate)
-      });
-
       const climateData = await fetchNASAPowerData({
         latitude: lat,
         longitude: lon,

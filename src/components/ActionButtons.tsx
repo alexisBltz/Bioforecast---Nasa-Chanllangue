@@ -31,7 +31,7 @@ const ActionButtons: React.FC = () => {
   return (
     <div className="action-buttons-fixed">
       <button onClick={handleReset} className="action-button-compact reset-button-compact" title={t('actions.reset_view', 'Restablecer vista del mapa')}>
-        🔄
+        ↻
       </button>
       
       <button onClick={handleShare} className="action-button-compact share-button-compact" title={t('actions.copy_link', 'Copiar enlace para compartir')}>
